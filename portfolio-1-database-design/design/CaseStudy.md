@@ -78,16 +78,18 @@ A retail point-of-sale (POS) and inventory system for one neighbourhood supermar
 
 - Each sale line uses one valid tax record.
 - The default tax is 0%.
-- Tax records used on sale lines cannot be changed or deleted.
-- New tax rates are added as new records.
+- Each sale line keeps the tax percentage used at the time of sale.
+- Tax records can be updated without changing past receipts.
+- Tax records used on sale lines cannot be deleted.
 
 #### 9. Discounts
 
-- Each sale line can use at most one valid discount.
+- Each sale line uses one valid discount record, including the 0% default.
 - Discounts are percentages applied per item.
-- No discount means 0%.
+- No discount uses the default 0% discount record.
 - Discount is applied before tax on paid lines.
 - Each sale line keeps the discount percentage used at the time of sale.
+- Discount records used on sale lines cannot be deleted.
 
 #### 10. Transactions
 

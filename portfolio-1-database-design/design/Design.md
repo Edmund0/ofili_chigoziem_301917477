@@ -143,7 +143,14 @@ I have chosen the following entities for my project.
 
 | Tables linked | Relationship | Meaning |
 | --- | --- | --- |
-| [Tables] | [One to one / one to many / many to many] | [How the records connect] |
+| role → staff | One to many | A role can have zero or more staff. Each staff member has one role. |
+| staff → shift | One to many | A staff member can work zero or more shifts. Each shift has one cashier. |
+| terminal → shift | One to many over time | A terminal can have zero or more shifts. Each shift uses one terminal. |
+| shift → sale | One to many | A shift can have zero or more sales. Each sale belongs to one shift. |
+| sale → sale_item | One to many | A sale has at least one line. Each line belongs to one sale. |
+| product → sale_item | One to many | A product can appear on zero or more sale lines. Each line has one product. |
+| tax → sale_item | One to many | A tax can be used on zero or more sale lines. Each line has one tax, including the 0% default. |
+| discount → sale_item | One to many | A discount can be used on zero or more sale lines. Each line has one discount, including the 0% default. |
 
 ## Business rules and constraints
 
@@ -151,4 +158,20 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 
 | Rule | Constraint or operation |
 | --- | --- |
-| [Rule number] | [How it is enforced] |
+| 1. Staff identifiers | UNIQUE on staff_code and email. A required foreign key links staff.role_id to role.id. |
+| 1. Role permissions | The operation checks the staff member's role flags before allowing the action. The foreign key alone does not check permissions. |
+| 2. Terminal code | UNIQUE on terminal_code. |
+| 3. Products | UNIQUE on sku. CHECK unit_price > 0, stock_qty >= 0 and reorder_level >= 0. |
+| 4. Shift links | Required foreign keys link each shift to staff and terminal. |
+| 4. Shift closing time | CHECK closed_at IS NULL OR closed_at > opened_at. |
+| 4. One open shift | A unique index on terminal_id applies only where closed_at IS NULL. |
+| 5. Sale details | UNIQUE on receipt_number. A required foreign key links the sale to its shift. CHECK payment_method is cash, card or transfer. |
+| 5. Completed sales | The sale transaction checks that the sale is complete and has at least one line before saving. A foreign key alone cannot require a sale to have lines. |
+| 6. Sale lines | Required foreign keys link each line to sale, product, tax and discount. CHECK quantity > 0 and unit_price_at_sale > 0. |
+| 6. Paid or giveaway | CHECK line_type is paid or giveaway. UNIQUE on (sale_id, product_id, line_type). |
+| 6, 8, 9. Historical values | Save the shelf price, tax percentage and discount percentage on the line when recording the sale. Later lookup changes do not change these saved values. |
+| 7. Giveaway reason | CHECK the reason is not blank for a giveaway and is NULL for a paid line. |
+| 5, 7, 9. Receipt calculations | Apply discount before tax on paid lines. Revenue excludes tax. Giveaway lines have zero revenue and zero tax charge. |
+| 8, 9. Default tax and discount | Seed one 0% record in each table. The foreign-key defaults use those records' IDs. |
+| 8, 9. Used lookup records | Foreign keys with ON DELETE RESTRICT prevent deleting tax or discount records used on sale lines. |
+| 10. Stock and transactions | Save the sale, lines and stock changes in one transaction. Reject the whole sale if stock is insufficient or any part fails. CHECK stock_qty >= 0 is the safety net. |
