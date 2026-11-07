@@ -6,7 +6,7 @@ MIT 8103 Advanced Database System
 
 ## Case study
 
-
+A retail point-of-sale (POS) and inventory system for one neighbourhood supermarket. Cashiers open a till shift on a checkout terminal, record sales made up of several line items, and close the shift at the end of the day. The system keeps product stock up to date as goods are sold and received.
 
 ## Portfolio folders
 
