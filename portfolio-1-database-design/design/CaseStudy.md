@@ -65,7 +65,8 @@ A retail point-of-sale (POS) and inventory system for one neighbourhood supermar
 - Each sale line refers to one existing product.
 - Each sale line has a quantity above zero.
 - A product appears at most once as a paid line and at most once as a giveaway line in a sale.
-- Each sale line keeps the product's shelf price at the time of sale, even if the price changes later.
+- Each product's shelf price at the time of sale is saved once per receipt in sale_product.
+- Paid and giveaway lines use that shared price, even if the product price changes later.
 - Each sale line is either a paid line or a giveaway line.
 
 #### 7. Giveaways
@@ -89,6 +90,7 @@ A retail point-of-sale (POS) and inventory system for one neighbourhood supermar
 - No discount uses the default 0% discount record.
 - Discount is applied before tax on paid lines.
 - Each sale line keeps the discount percentage used at the time of sale.
+- Discount records can be updated without changing past receipts.
 - Discount records used on sale lines cannot be deleted.
 
 #### 10. Transactions
@@ -101,6 +103,6 @@ A retail point-of-sale (POS) and inventory system for one neighbourhood supermar
 
 One store, two terminals and fictional records.
 
-**In scope**: staff, roles, terminals, shifts, products, sales, sale lines, taxes, and discounts. Giveaways are recorded on sale lines.
+**In scope**: staff, roles, terminals, shifts, products, sales, sale products, sale lines, taxes, and discounts. Giveaways are recorded on sale lines.
 
 **Out of scope**: suppliers as a table, refunds, loyalty points, card processing, user login, standalone giveaways, fixed-amount discounts, receipt-level discounts and multiple taxes or discounts on one line.

@@ -14,7 +14,8 @@ I have chosen the following entities for my project.
 | shift | A cashier's work session on a terminal | Link sales to a cashier and checkout. |
 | product | A product, its price and stock quantity | Keep track of inventory. |
 | sale | A receipt, its date, shift and payment method | Keep track of completed sales. |
-| sale_item | A paid or giveaway line, its product, quantity, price, tax and discount | Record the items sold or given away. |
+| sale_product | A product on a receipt and its shelf price at the time of sale | Keep one shared price for paid and giveaway lines. |
+| sale_item | A paid or giveaway line, its quantity, tax and discount | Record the items sold or given away. |
 | tax | A valid tax name and percentage | Keep a list of valid tax rates. |
 | discount | A valid discount name and percentage | Keep a list of valid discounts. |
 
@@ -101,6 +102,17 @@ I have chosen the following entities for my project.
 | sold_at | TIMESTAMPTZ | Required |
 | payment_method | VARCHAR(10) | Required; cash, card or transfer |
 
+### Sale product
+
+**Design Assumption**: Paid and giveaway lines for the same product on one receipt share one shelf price.
+
+| Attribute | PostgreSQL type | Key or requirement |
+| --- | --- | --- |
+| id | BIGINT | Primary key; generated automatically |
+| sale_id | BIGINT | Required; foreign key to sale.id; unique with product_id |
+| product_id | BIGINT | Required; foreign key to product.id |
+| unit_price_at_sale | NUMERIC(10,2) | Required; shelf price at the time of sale; above zero |
+
 ### Sale item
 
 **Design Assumption**: Each line has one tax and one percentage discount. A line is either paid or a giveaway.
@@ -108,10 +120,8 @@ I have chosen the following entities for my project.
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
 | id | BIGINT | Primary key; generated automatically |
-| sale_id | BIGINT | Required; foreign key to sale.id |
-| product_id | BIGINT | Required; foreign key to product.id |
+| sale_product_id | BIGINT | Required; foreign key to sale_product.id; unique with line_type |
 | quantity | INTEGER | Required; above zero |
-| unit_price_at_sale | NUMERIC(10,2) | Required; shelf price at the time of sale; above zero |
 | line_type | VARCHAR(10) | Required; paid or giveaway |
 | giveaway_reason | VARCHAR(80) | Required and not blank for giveaways; NULL for paid lines |
 | tax_id | BIGINT | Required; foreign key to tax.id; defaults to the 0% tax record |
@@ -121,7 +131,7 @@ I have chosen the following entities for my project.
 
 ### Tax
 
-**Design Assumption**: One seeded 0% tax record serves as the default.
+**Design Assumption**: One seeded 0% tax record serves as the default. Tax rates can be edited; saved sale-line percentages do not change.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -131,7 +141,7 @@ I have chosen the following entities for my project.
 
 ### Discount
 
-**Design Assumption**: One seeded 0% discount record serves as the default.
+**Design Assumption**: One seeded 0% discount record serves as the default. Discount rates can be edited; saved sale-line percentages do not change.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -147,8 +157,9 @@ I have chosen the following entities for my project.
 | staff → shift | One to many | A staff member can work zero or more shifts. Each shift has one cashier. |
 | terminal → shift | One to many over time | A terminal can have zero or more shifts. Each shift uses one terminal. |
 | shift → sale | One to many | A shift can have zero or more sales. Each sale belongs to one shift. |
-| sale → sale_item | One to many | A sale has at least one line. Each line belongs to one sale. |
-| product → sale_item | One to many | A product can appear on zero or more sale lines. Each line has one product. |
+| sale → sale_product | One to many | A sale has one or more products. Each sale_product belongs to one sale. |
+| product → sale_product | One to many | A product can appear on zero or more receipts. Each sale_product refers to one product. |
+| sale_product → sale_item | One to many | Each receipt product has a paid line, a giveaway line or both. Each sale_item belongs to one sale_product. |
 | tax → sale_item | One to many | A tax can be used on zero or more sale lines. Each line has one tax, including the 0% default. |
 | discount → sale_item | One to many | A discount can be used on zero or more sale lines. Each line has one discount, including the 0% default. |
 
@@ -166,12 +177,13 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 | 4. Shift closing time | CHECK closed_at IS NULL OR closed_at > opened_at. |
 | 4. One open shift | A unique index on terminal_id applies only where closed_at IS NULL. |
 | 5. Sale details | UNIQUE on receipt_number. A required foreign key links the sale to its shift. CHECK payment_method is cash, card or transfer. |
-| 5. Completed sales | The sale transaction checks that the sale is complete and has at least one line before saving. A foreign key alone cannot require a sale to have lines. |
-| 6. Sale lines | Required foreign keys link each line to sale, product, tax and discount. CHECK quantity > 0 and unit_price_at_sale > 0. |
-| 6. Paid or giveaway | CHECK line_type is paid or giveaway. UNIQUE on (sale_id, product_id, line_type). |
-| 6, 8, 9. Historical values | Save the shelf price, tax percentage and discount percentage on the line when recording the sale. Later lookup changes do not change these saved values. |
+| 5. Completed sales | The transaction checks that the sale is complete, has products and that each sale_product has at least one line. Foreign keys alone cannot require child records. |
+| 6. Shared shelf price | Required foreign keys link sale_product to sale and product. UNIQUE on (sale_id, product_id). CHECK unit_price_at_sale > 0. |
+| 6. Sale lines | Required foreign keys link each line to sale_product, tax and discount. CHECK quantity > 0. |
+| 6. Paid or giveaway | CHECK line_type is paid or giveaway. UNIQUE on (sale_product_id, line_type). |
+| 6, 8, 9. Historical values | Save the shelf price on sale_product and the applied tax and discount percentages on sale_item. Editing lookup rates does not change past receipts. |
 | 7. Giveaway reason | CHECK the reason is not blank for a giveaway and is NULL for a paid line. |
 | 5, 7, 9. Receipt calculations | Apply discount before tax on paid lines. Revenue excludes tax. Giveaway lines have zero revenue and zero tax charge. |
 | 8, 9. Default tax and discount | Seed one 0% record in each table. The foreign-key defaults use those records' IDs. |
 | 8, 9. Used lookup records | Foreign keys with ON DELETE RESTRICT prevent deleting tax or discount records used on sale lines. |
-| 10. Stock and transactions | Save the sale, lines and stock changes in one transaction. Reject the whole sale if stock is insufficient or any part fails. CHECK stock_qty >= 0 is the safety net. |
+| 10. Stock and transactions | Save the sale, sale products, lines and stock changes in one transaction. Reject the whole sale if stock is insufficient or any part fails. CHECK stock_qty >= 0 is the safety net. |
