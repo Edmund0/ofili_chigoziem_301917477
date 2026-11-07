@@ -6,8 +6,6 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 I have chosen the following entities for my project.
 
-**Design Assumption**:
-
 | Entity | Information stored | Why we need it |
 | --- | --- | --- |
 | staff | A cashier or supervisor | Keep track of staff. |
@@ -22,9 +20,15 @@ I have chosen the following entities for my project.
 
 ## Attributes and keys
 
+- **Required:** cannot be `NULL`.
+- **Unique:** cannot repeat.
+- **Primary key:** identifies each record.
+- **Foreign key:** links to a record in another table.
+- **Default:** used when no value is supplied.
+
 ### Staff
 
-**Design Assumption**:
+**Design Assumption**: Each staff member has one role. User login is outside scope.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -38,7 +42,7 @@ I have chosen the following entities for my project.
 
 ### Role
 
-**Design Assumption**:
+**Design Assumption**: Access is role-based. Staff with the same role have the same permissions.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -52,7 +56,7 @@ I have chosen the following entities for my project.
 
 ### Terminal
 
-**Design Assumption**:
+**Design Assumption**: The system covers one store with two checkout terminals.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -62,7 +66,7 @@ I have chosen the following entities for my project.
 
 ### Shift
 
-**Design Assumption**:
+**Design Assumption**: Each shift has one cashier and one terminal.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -74,7 +78,7 @@ I have chosen the following entities for my project.
 
 ### Product
 
-**Design Assumption**:
+**Design Assumption**: Stock is counted in whole units.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -87,7 +91,7 @@ I have chosen the following entities for my project.
 
 ### Sale
 
-**Design Assumption**:
+**Design Assumption**: Only completed, fully paid sales are saved. No drafts, partial payments or refunds.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -99,7 +103,7 @@ I have chosen the following entities for my project.
 
 ### Sale item
 
-**Design Assumption**:
+**Design Assumption**: Each line has one tax and one percentage discount. A line is either paid or a giveaway.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -117,7 +121,7 @@ I have chosen the following entities for my project.
 
 ### Tax
 
-**Design Assumption**:
+**Design Assumption**: One seeded 0% tax record serves as the default.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -127,7 +131,7 @@ I have chosen the following entities for my project.
 
 ### Discount
 
-**Design Assumption**:
+**Design Assumption**: One seeded 0% discount record serves as the default.
 
 | Attribute | PostgreSQL type | Key or requirement |
 | --- | --- | --- |
@@ -137,8 +141,6 @@ I have chosen the following entities for my project.
 
 ## Relationships
 
-**Design Assumption**:
-
 | Tables linked | Relationship | Meaning |
 | --- | --- | --- |
 | [Tables] | [One to one / one to many / many to many] | [How the records connect] |
@@ -146,8 +148,6 @@ I have chosen the following entities for my project.
 ## Business rules and constraints
 
 Business rules are listed in [CaseStudy.md](CaseStudy.md).
-
-**Design Assumption**:
 
 | Rule | Constraint or operation |
 | --- | --- |
