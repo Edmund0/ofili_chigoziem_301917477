@@ -56,42 +56,41 @@ A retail point-of-sale (POS) and inventory system for one neighbourhood supermar
 - Each sale has a unique receipt number.
 - Each sale belongs to one existing shift.
 - Each sale is paid by cash, card or transfer.
-- Sales revenue is the total of paid lines after discounts, excluding tax.
+- Sales revenue uses paid_qty after discounts and excludes tax.
 - Only completed sales are saved.
-- Each sale must have at least one sale line.
+- Each sale must have at least one sale item.
 
 #### 6. Sale items
 
-- Each sale line refers to one existing product.
-- Each sale line has a quantity above zero.
-- A product appears at most once as a paid line and at most once as a giveaway line in a sale.
-- Each product's shelf price at the time of sale is saved once per receipt in sale_product.
-- Paid and giveaway lines use that shared price, even if the product price changes later.
-- Each sale line is either a paid line or a giveaway line.
+- Each sale item refers to one existing product.
+- A product appears at most once per sale.
+- Each item records paid_qty and giveaway_qty. Both are zero or above, and at least one is above zero.
+- Each item keeps the product's shelf price at the time of sale.
+- The paid and giveaway quantities use the same saved shelf price.
 
 #### 7. Giveaways
 
-- A giveaway line is not charged and must record a reason.
-- A giveaway line still reduces stock.
-- Giveaways have no tax charge and do not count as sales revenue.
+- A reason is required when giveaway_qty is above zero and must otherwise be NULL.
+- Stock is reduced by paid_qty + giveaway_qty.
+- giveaway_qty is not charged, has no tax charge and does not count as sales revenue.
 
 #### 8. Taxes
 
-- Each sale line uses one valid tax record.
+- Each sale item uses one valid tax record.
 - The default tax is 0%.
-- Each sale line keeps the tax percentage used at the time of sale.
+- Each sale item keeps the tax percentage used at the time of sale.
 - Tax records can be updated without changing past receipts.
-- Tax records used on sale lines cannot be deleted.
+- Tax records used on sale items cannot be deleted.
 
 #### 9. Discounts
 
-- Each sale line uses one valid discount record, including the 0% default.
+- Each sale item uses one valid discount record, including the 0% default.
 - Discounts are percentages applied per item.
 - No discount uses the default 0% discount record.
-- Discount is applied before tax on paid lines.
-- Each sale line keeps the discount percentage used at the time of sale.
+- Discount is applied before tax to the paid quantity.
+- Each sale item keeps the discount percentage used at the time of sale.
 - Discount records can be updated without changing past receipts.
-- Discount records used on sale lines cannot be deleted.
+- Discount records used on sale items cannot be deleted.
 
 #### 10. Transactions
 
@@ -103,6 +102,6 @@ A retail point-of-sale (POS) and inventory system for one neighbourhood supermar
 
 One store, two terminals and fictional records.
 
-**In scope**: staff, roles, terminals, shifts, products, sales, sale products, sale lines, taxes, and discounts. Giveaways are recorded on sale lines.
+**In scope**: staff, roles, terminals, shifts, products, sales, sale items, taxes, and discounts. Giveaways are recorded as quantities on sale items.
 
 **Out of scope**: suppliers as a table, refunds, loyalty points, card processing, user login, standalone giveaways, fixed-amount discounts, receipt-level discounts and multiple taxes or discounts on one line.
