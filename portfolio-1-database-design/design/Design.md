@@ -20,10 +20,13 @@ I have chosen the following entities for my project.
 
 ## Attributes and keys
 
-- **Required:** cannot be `NULL`.
-- **Unique:** cannot repeat.
-- **Primary key:** identifies each record.
-- **Foreign key:** links to a record in another table.
+**Glossary**
+
+- **PK:** primary key; identifies each record.
+- **FK:** foreign key; links to a record in another table.
+- **U:** unique; cannot repeat. Mermaid uses **UK** for this marker.
+- **R:** required; cannot be `NULL`.
+- **U1:** fields that are unique together, not individually.
 - **Default:** used when no value is supplied.
 
 ### Staff
@@ -158,21 +161,21 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 
 | Rule | Constraint or operation |
 | --- | --- |
-| 1. Staff identifiers | UNIQUE on staff_code and email. A required foreign key links staff.role_id to role.id. |
-| 1. Role permissions | The operation checks the staff member's role flags before allowing the action. The foreign key alone does not check permissions. |
-| 2. Terminal code | UNIQUE on terminal_code. |
-| 3. Products | UNIQUE on sku. CHECK unit_price > 0, stock_qty >= 0 and reorder_level >= 0. |
-| 4. Shift links | Required foreign keys link each shift to staff and terminal. |
-| 4. Shift closing time | CHECK closed_at IS NULL OR closed_at > opened_at. |
-| 4. One open shift | A unique index on terminal_id applies only where closed_at IS NULL. |
-| 5. Sale details | UNIQUE on receipt_number. A required foreign key links the sale to its shift. CHECK payment_method is cash, card or transfer. |
-| 5. Completed sales | The transaction checks that the sale is complete and has at least one sale_item. A foreign key alone cannot require child records. |
-| 6. Item links | Required foreign keys link each item to sale, product, tax and discount. |
-| 6. Item values | CHECK unit_price_at_sale > 0, paid_qty >= 0 and giveaway_qty >= 0. CHECK paid_qty > 0 OR giveaway_qty > 0. |
-| 6. One product per receipt | UNIQUE on (sale_id, product_id). One saved shelf price applies to both quantities. |
-| 6, 8, 9. Historical values | Save the shelf price and tax/discount percentages on sale_item. Editing lookup rates does not change past receipts. |
-| 7. Giveaway reason | CHECK the reason is not blank when giveaway_qty > 0 and is NULL when giveaway_qty = 0. |
-| 5, 7, 9. Receipt calculations | Apply discount before tax to paid_qty × unit_price_at_sale. Revenue excludes tax. giveaway_qty contributes no revenue or tax charge. |
-| 8, 9. Default tax and discount | Seed one 0% record in each table. The foreign-key defaults use those records' IDs. |
-| 8, 9. Used lookup records | Foreign keys with ON DELETE RESTRICT prevent deleting referenced tax and discount records. |
-| 10. Stock and transactions | Reduce stock by paid_qty + giveaway_qty. Save the sale, items and stock changes in one transaction. Reject the whole sale if stock is insufficient or any part fails. CHECK stock_qty >= 0 is the safety net. |
+| 1. Staff identifiers | UNIQUE: staff_code; email.<br>Required FK: role_id → role.id. |
+| 1. Role permissions | Check role flags before each action.<br>FK does not enforce permissions. |
+| 2. Terminal code | UNIQUE: terminal_code. |
+| 3. Products | UNIQUE: sku.<br>CHECK: unit_price > 0; stock_qty >= 0; reorder_level >= 0. |
+| 4. Shift links | Required FKs:<br>staff_id → staff.id<br>terminal_id → terminal.id |
+| 4. Shift closing time | CHECK: closed_at IS NULL OR closed_at > opened_at. |
+| 4. One open shift | UNIQUE index on terminal_id WHERE closed_at IS NULL. |
+| 5. Sale details | UNIQUE: receipt_number.<br>Required FK: shift_id → shift.id.<br>CHECK: payment_method IN ('cash', 'card', 'transfer'). |
+| 5. Completed sales | Transaction validates completion and at least one sale_item.<br>FK cannot require child rows. |
+| 6. Item links | Required FKs:<br>sale_id → sale.id<br>product_id → product.id<br>tax_id → tax.id<br>discount_id → discount.id |
+| 6. Item values | CHECK: unit_price_at_sale > 0.<br>CHECK: paid_qty >= 0 AND giveaway_qty >= 0.<br>CHECK: paid_qty > 0 OR giveaway_qty > 0. |
+| 6. One product per receipt | UNIQUE (sale_id, product_id).<br>One shelf price for both quantities. |
+| 6, 8, 9. Historical values | Save shelf price and applied tax/discount rates on sale_item.<br>Lookup edits leave saved values unchanged. |
+| 7. Giveaway reason | CHECK: reason NOT NULL and non-blank if giveaway_qty > 0;<br>reason IS NULL if giveaway_qty = 0. |
+| 5, 7, 9. Receipt calculations | Paid value = paid_qty × unit_price_at_sale.<br>Apply discount, then tax.<br>Revenue excludes tax.<br>Giveaway revenue and tax = 0. |
+| 8, 9. Default tax and discount | Seed one 0% tax and one 0% discount.<br>Default tax_id and discount_id to those record IDs. |
+| 8, 9. Used lookup records | FKs with ON DELETE RESTRICT protect referenced tax/discount records. |
+| 10. Stock and transactions | Stock reduction = paid_qty + giveaway_qty.<br>Save sale, items and stock changes in one transaction.<br>ROLLBACK if stock is insufficient or any step fails.<br>CHECK: stock_qty >= 0 as a safety net. |
