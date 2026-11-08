@@ -100,7 +100,6 @@ VALUES ('R-101',
         '2026-11-02 10:00+00', 'card');
 
 -- 9. Adding Sale Items
--- Saved percentages describe the old receipts, not today's lookup rates.
 INSERT INTO public.sale_item (
     sale_id,
     product_id,
