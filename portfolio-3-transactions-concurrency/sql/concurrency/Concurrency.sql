@@ -1,3 +1,5 @@
+-- RUN SETUP ON TERMINAL A:
+
 
 -- RUN A1 (ON BASH TERMINAL A):
 --== Leave the transaction open. Run B1 in Session B.
@@ -10,3 +12,6 @@
 
 -- RUN B2 (ON BASH TERMINAL B):
 --== After the duplicate-key error, roll back Session B and check the saved shift.
+
+
+-- RUN CLEANUP ON TERMINAL A:
