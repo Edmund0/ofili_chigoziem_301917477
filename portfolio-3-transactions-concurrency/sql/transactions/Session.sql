@@ -20,7 +20,7 @@ SET closed_at = CURRENT_TIMESTAMP
 WHERE terminal_id = (SELECT id FROM public.terminal WHERE terminal_code = 'T03')
     AND closed_at IS NULL;
 
--- 3. ROLL BACK AN INVALID SHIFT:
+-- 3. ROLLBACK — TRY TO CREATE AN INVALID SHIFT:
 BEGIN;
 
 --== Open a new shift.
@@ -34,6 +34,7 @@ VALUES ((SELECT id FROM public.staff WHERE staff_code = 'C001'),
         CURRENT_TIMESTAMP);
 
 --== Try closing the shift at its opening time.
+--== Invalid as this should violate one of our db constraints.
 UPDATE public.shift
 SET closed_at = opened_at
 WHERE terminal_id = (SELECT id FROM public.terminal WHERE terminal_code = 'T03')

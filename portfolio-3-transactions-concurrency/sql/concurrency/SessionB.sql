@@ -1,12 +1,13 @@
 -- SESSION B:
 -- Run B1 after A1; run B2 after A2.
 
--- B1. TRY TO OPEN T03:
+-- B0. SET TERMINAL TO SESSION B
 --== Name Session B and use READ COMMITTED.
 SET application_name = 'p3_session_b';
 BEGIN ISOLATION LEVEL READ COMMITTED;
 SHOW transaction_isolation;
 
+-- B1. TRY TO OPEN T03:
 --== Check visibility before A commits.
 SELECT COUNT(*) AS visible_open_shifts
 FROM public.shift

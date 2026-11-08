@@ -1,11 +1,12 @@
 -- SESSION A:
 
--- A1. OPEN T03:
+-- A0. SET TERMINAL TO A
 --== Name Session A and use READ COMMITTED.
 SET application_name = 'p3_session_a';
 BEGIN ISOLATION LEVEL READ COMMITTED;
 SHOW transaction_isolation;
 
+-- A1. OPEN T03:
 --== Open T03 for C001.
 INSERT INTO public.shift (
     staff_id,
