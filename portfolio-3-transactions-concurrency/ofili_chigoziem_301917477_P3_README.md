@@ -6,8 +6,10 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 | File | Contents |
 | --- | --- |
+| [PostgreSQL environment setup](../portfolio-1-database-design/design/Setup.md) | Shared PostgreSQL installation, startup and connection steps. |
 | [Transaction setup](sql/transactions/Setup.sql) | Create and populate pos_portfolio_transactions. |
-| [Transactions](sql/transactions/Transactions.sql) | Commit a shift closure and roll back an invalid shift. |
+| [Transactions](sql/transactions/Transactions.sql) | Setup, session and cleanup order guide. |
+| [Transaction session](sql/transactions/Session.sql) | Commit a shift closure and roll back an invalid shift. |
 | [Transaction cleanup](sql/transactions/Cleanup.sql) | Drop the transaction practice database. |
 | [Concurrency setup](sql/concurrency/Setup.sql) | Create and populate pos_portfolio_concurrency. |
 | [Concurrency](sql/concurrency/Concurrency.sql) | Session order guide. |
@@ -24,19 +26,15 @@ Run from the repository root in Codespaces. Both setups load the existing Portfo
 | Transactions | pos_portfolio_transactions | T03 has one open shift. |
 | Concurrency | pos_portfolio_concurrency | T03 has no shifts. |
 
-Start PostgreSQL and open psql in Terminal A:
-
-```bash
-sudo service postgresql start
-sudo runuser -u postgres -- psql
-```
+Complete the [PostgreSQL environment setup](../portfolio-1-database-design/design/Setup.md) and leave psql open in Terminal A.
 
 ## Transaction test
 
-Transactions.sql calls its own Setup.sql. Run:
+Transactions.sql lists the order. Run setup, then the session in the same psql terminal:
 
 ```text
-\i portfolio-3-transactions-concurrency/sql/transactions/Transactions.sql
+\i portfolio-3-transactions-concurrency/sql/transactions/Setup.sql
+\i portfolio-3-transactions-concurrency/sql/transactions/Session.sql
 ```
 
 Save the committed closing time, invalid-closing-time error and final open-shift count. Then drop the transaction practice database:
@@ -97,3 +95,17 @@ Cleanup drops only the matching practice database. Close other connections to th
 ## References
 
 
+
+Reference: [PostgreSQL transaction examples: BEGIN, COMMIT and ROLLBACK](https://www.postgresql.org/docs/16/tutorial-transactions.html).
+
+Reference: [PostgreSQL READ COMMITTED isolation](https://www.postgresql.org/docs/16/transaction-iso.html#XACT-READ-COMMITTED).
+
+Reference: [PostgreSQL BEGIN ISOLATION LEVEL syntax](https://www.postgresql.org/docs/16/sql-begin.html).
+
+Reference: [PostgreSQL SET syntax](https://www.postgresql.org/docs/16/sql-set.html).
+
+Reference: [PostgreSQL application_name setting](https://www.postgresql.org/docs/16/runtime-config-logging.html#GUC-APPLICATION-NAME).
+
+Reference: [PostgreSQL SHOW syntax](https://www.postgresql.org/docs/16/sql-show.html).
+
+Reference: [PostgreSQL locks and concurrent transactions](https://www.postgresql.org/docs/16/explicit-locking.html).

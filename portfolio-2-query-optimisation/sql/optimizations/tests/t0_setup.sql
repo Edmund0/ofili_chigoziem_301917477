@@ -6,7 +6,7 @@
 \o /dev/null            \\ -- discard query results; errors remain visible
 
 -- CREATE TEST DATABASE [PORTFOLIO BENCHMARK]
-\ir t1_make.sql
+\ir DBOptData_Make.sql
 
 SET client_min_messages = warning;
 SET TIME ZONE 'UTC';
@@ -27,8 +27,8 @@ TRUNCATE
 RESTART IDENTITY;
 
 -- INSERT TEST DATA:
-\ir t2_baseline.sql
-\ir t3_sales.sql
+\ir DBOptData_Baseline.sql
+\ir DBOptData_Sales.sql
 
 COMMIT;
 

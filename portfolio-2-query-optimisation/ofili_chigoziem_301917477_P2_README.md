@@ -2,60 +2,28 @@
 
 Author: Chigoziem Edmund Ofili (301917477)
 
-## Queries and results
-
-| Query | Purpose | Results | Evidence |
-| --- | --- | --- | --- |
-| Q1 | Sales report | | |
-| Q2 | Total revenue for a period | | |
-| Q3 | Revenue by payment method | | |
-| Q4 | Low-stock report | | |
-
-**Date range used:**
-
-## Index comparison
-
-**PostgreSQL version and environment:**
-
-**Test table:**
-
-**Dataset and row count:**
-
-**Query tested:**
-
-**Index added:**
-
-**How the measurements were taken:**
-
-| Measurement | Before index | After index |
-| --- | --- | --- |
-| Query result | | |
-| Scan type | | |
-| Execution time — run 1 (ms) | | |
-| Execution time — run 2 (ms) | | |
-| Execution time — run 3 (ms) | | |
-| Median execution time (ms) | | |
-| Shared buffer hits — third run | | |
-| Execution plan evidence | | |
-
-## Performance analysis
-
-**Plan and timing changes:**
-
-**Limitations:**
-
-**Index storage and write costs:**
-
-## Files
+## Implementation Files
 
 | File | Contents |
 | --- | --- |
-| [Queries](sql/queries.sql) | SQL reports. |
-| [Optimisation](sql/optimization.sql) | Performance comparison SQL. |
-| [Portfolio 1 optimisation](sql/optimizations/optimization_1.sql) | Compare Q2 on existing data; roll back the test index. |
+| [PostgreSQL environment setup](../portfolio-1-database-design/design/Setup.md) | Shared PostgreSQL installation, startup and connection steps. |
+| [Test record](sql/Test.md) | Query and optimisation steps, evidence, recorded results and analysis. |
+| [Query tests](sql/queries/q0_test.sql) | Run Q1–Q4 on Portfolio 1 data. |
+| [Q1](sql/queries/q1_sales_report.sql) | Receipts with cashier, terminal, payment and giveaway values. |
+| [Q2](sql/queries/q2_total_revenue.sql) | Revenue after discounts, excluding tax, for a date range. |
+| [Q3](sql/queries/q3_revenue_by_method.sql) | Revenue and giveaway value grouped by payment method. |
+| [Q4](sql/queries/q4_low_stock.sql) | Low-stock report. |
+| [Original-data optimisation](sql/optimizations/optimization_1.sql) | Compare Q2 on Portfolio 1 data; roll back the test index. |
+| [Benchmark optimisation](sql/optimizations/optimization.sql) | Compare Q2 on a larger dataset. |
+| [Measurements](sql/optimizations/measurements.sql) | One warm-up and three execution plans for each phase. |
+| [Benchmark setup](sql/optimizations/tests/t0_setup.sql) | Create and load the benchmark database. |
+| [Database creation](sql/optimizations/tests/DBOptData_Make.sql) | Create the benchmark database and tables. |
+| [Baseline records](sql/optimizations/tests/DBOptData_Baseline.sql) | Staff, products, tax and discount records. |
+| [Sales records](sql/optimizations/tests/DBOptData_Sales.sql) | Generate benchmark shifts, sales and items. |
 
-**Results and screenshots:**
+## References
 
-## Reference
+Reference: [PostgreSQL — Using EXPLAIN](https://www.postgresql.org/docs/16/using-explain.html).
 
-Reference:
+Reference: [PostgreSQL — Prepared statement plans](https://www.postgresql.org/docs/16/sql-prepare.html).
+
