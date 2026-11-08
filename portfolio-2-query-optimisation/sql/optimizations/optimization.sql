@@ -1,5 +1,7 @@
 -- QUERY OPTIMISATION:
 \set ON_ERROR_STOP on
+\o
+\set QUIET off
 \pset pager off
 
 -- 1. LOAD TEST DATA:

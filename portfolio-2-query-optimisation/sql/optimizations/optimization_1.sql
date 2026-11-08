@@ -1,6 +1,8 @@
 -- QUERY OPTIMISATION ON PORTFOLIO 1:
 -- The test index is rolled back after measurement.
 \set ON_ERROR_STOP on
+\o
+\set QUIET off
 \pset pager off
 
 -- 1. CONNECT TO THE ORIGINAL DATABASE:
