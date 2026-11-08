@@ -55,7 +55,7 @@ Open Terminal B at the repository root:
 mongosh "mongodb://127.0.0.1:27017"
 ```
 
-The following commands go inside mongosh:
+Run each of the following commands separately inside mongosh, pressing Enter after each:
 
 ```javascript
 db.adminCommand({ ping: 1 })
@@ -69,7 +69,7 @@ Check for `ok: 1`, the server version, the database name pos_events and an initi
 
 If documents already exist, inspect the previous run before loading the sample again.
 
-Save the connection-check output as evidence and record the actual MongoDB version and environment in the README.
+Save the connection-check output as evidence and record the actual MongoDB version and environment in [Test.md](../db/Test.md).
 
 ## 5. Run the tests
 
