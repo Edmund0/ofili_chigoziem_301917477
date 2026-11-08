@@ -1,6 +1,4 @@
 -- NEGATIVE TESTS:
--- Run each statement separately after DBTestData.sql, outside BEGIN/COMMIT.
--- Each INSERT is deliberately invalid and should produce an ERROR.
 
 -- Count rows before the tests.
 SELECT *
