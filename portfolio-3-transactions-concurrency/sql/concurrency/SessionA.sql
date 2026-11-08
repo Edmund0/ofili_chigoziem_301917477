@@ -1,12 +1,12 @@
 -- SESSION A:
 
 -- A1. OPEN T03:
---== Name Session A and start a READ COMMITTED transaction.
+--== Name Session A and use READ COMMITTED.
 SET application_name = 'p3_session_a';
 BEGIN ISOLATION LEVEL READ COMMITTED;
 SHOW transaction_isolation;
 
---== Create First Shift in terminal T03
+--== Open T03 for C001.
 INSERT INTO public.shift (
     staff_id,
     terminal_id,
@@ -18,7 +18,7 @@ VALUES ((SELECT id FROM public.staff WHERE staff_code = 'C001'),
         
 
 -- A2. CHECK THE WAIT AND COMMIT:
---== Check Session B's wait, then commit the shift.
+--== Show Session B's lock wait before committing.
 SELECT 
     application_name, 
     wait_event_type

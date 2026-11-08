@@ -2,18 +2,18 @@
 -- Run B1 after A1; run B2 after A2.
 
 -- B1. TRY TO OPEN T03:
---== Name Session B and start a READ COMMITTED transaction.
+--== Name Session B and use READ COMMITTED.
 SET application_name = 'p3_session_b';
 BEGIN ISOLATION LEVEL READ COMMITTED;
 SHOW transaction_isolation;
 
---== Check whether Session A's uncommitted shift is visible.
+--== Check visibility before A commits.
 SELECT COUNT(*) AS visible_open_shifts
 FROM public.shift
 WHERE terminal_id = (SELECT id FROM public.terminal WHERE terminal_code = 'T03')
     AND closed_at IS NULL;
 
---== Create Second Shift in terminal T03
+--== Try opening T03 for C002.
 INSERT INTO public.shift (
     staff_id,
     terminal_id,
@@ -28,7 +28,7 @@ VALUES ((SELECT id FROM public.staff WHERE staff_code = 'C002'),
 --== Clear the failed transaction.
 ROLLBACK;
 
---== Check the Saved Shift
+--== Check the saved shift.
 SELECT
     sf.staff_code,
     tm.terminal_code,
