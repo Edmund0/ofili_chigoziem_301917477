@@ -1,0 +1,74 @@
+pos_events> load("portfolio-4-nosql/db/code/MongoDB.js")
+| 
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': 'E001',
+    '1': 'E002',
+    '2': 'E003',
+    '3': 'E004'
+  }
+}
+4
+[
+  {
+    _id: 'E001',
+    event_type: 'delivery',
+    occurred_at: ISODate('2026-11-01T08:30:00.000Z'),
+    quantity_change: 10,
+    details: {
+      delivery_reference: 'D001'
+    }
+  },
+  {
+    _id: 'E002',
+    event_type: 'sale',
+    occurred_at: ISODate('2026-11-01T10:00:00.000Z'),
+    quantity_change: -2,
+    details: {
+      receipt_number: 'R-101'
+    }
+  },
+  {
+    _id: 'E003',
+    event_type: 'giveaway',
+    occurred_at: ISODate('2026-11-01T10:00:00.000Z'),
+    quantity_change: -1,
+    details: {
+      receipt_number: 'R-101',
+      reason: 'Buy 2, get 1 free'
+    }
+  }
+]
+[
+  {
+    _id: 'E003',
+    event_type: 'giveaway',
+    occurred_at: ISODate('2026-11-01T10:00:00.000Z'),
+    product: {
+      sku: 'RICE',
+      name: 'Rice'
+    },
+    staff: {
+      staff_code: 'C001',
+      name: 'John Bishop'
+    },
+    quantity_change: -1,
+    details: {
+      receipt_number: 'R-101',
+      reason: 'Buy 2, get 1 free'
+    }
+  }
+]
+[
+  {
+    _id: 'RICE',
+    net_quantity_change: 7
+  },
+  {
+    _id: 'SOAP',
+    net_quantity_change: 5
+  }
+]
+true
+pos_events> 
