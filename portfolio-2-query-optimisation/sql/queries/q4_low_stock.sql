@@ -1,10 +1,11 @@
 -- SQL QUERIES:
--- EXECUTE takes a start date (inclusive) and end date (exclusive); NULL leaves a bound open.
+-- EXECUTE low_stock takes no parameters.
 
 BEGIN;
 
 -- Q4: LOW-STOCK REPORT:
 -- Lists products at or below their reorder level.
+PREPARE low_stock AS
 SELECT 
     prod.sku            AS item,
     prod.name           AS name,
