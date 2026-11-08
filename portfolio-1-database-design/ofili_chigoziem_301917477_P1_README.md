@@ -4,36 +4,25 @@
 
 | File | Contents |
 | --- | --- |
+| [PostgreSQL environment setup](design/Setup.md) | Shared PostgreSQL installation, startup and connection steps. |
 | [Case study](design/CaseStudy.md) | Users, operations, business rules and scope. |
-| [Design](design/Design.md) | Entities, attributes, keys, relationships and constraints. |
+| [Design](design/Design.md) | POS records, their fields and the rules connecting them. |
 | [ER diagram](design/ERDiagram.md) | Key relationships and the full attribute diagram. |
-| [Normalisation](design/Normalisation.md) | Starting record, 1NF, 2NF and 3NF. |
+| [Normalisation](design/Normalisation.md) | Separate receipt, product and lookup details through 1NF–3NF. |
 | [Schema](sql/tables/DBSchema.sql) | Nine tables, constraints, open-shift index and default tax/discount records. |
 | [Test data](sql/tests/DBTestData.sql) | Fictional records for the tests. |
 | [Negative tests](sql/tests/DBNegativeTest.sql) | Invalid inserts and row counts before and after testing. |
-| [Positive tests](sql/tests/DBPositiveTest.sql) | Historical rates and a sale with paid and giveaway quantities. |
+| [Positive tests](sql/tests/DBPositiveTest.sql) | Run the rate-history and completed-sale checks in order. |
+| [Historical rates](sql/tests/DBHistoricalRatesTest.sql) | Change current rates and inspect saved sale percentages. |
+| [Completed sale](sql/tests/DBSaleTest.sql) | Record paid and giveaway quantities and reduce stock. |
 
 ## Steps to reproduce
 
-Worked from the repository root in GitHub Codespaces. Commands after step 3 were run inside `psql`.
+Worked from the repository root in GitHub Codespaces. Database commands were run inside `psql`.
 
-1. Opened the repository in a Codespace.
+1. Prepared PostgreSQL using the [PostgreSQL environment setup](design/Setup.md).
 
-2. Installed PostgreSQL:
-
-   ```bash
-   sudo apt-get update
-   sudo apt-get install -y postgresql
-   ```
-
-3. Started the server and opened `psql`:
-
-   ```bash
-   sudo service postgresql start
-   sudo runuser -u postgres -- psql
-   ```
-
-4. Created the database and tables:
+2. Created the database and tables:
 
    ```text
    \i portfolio-1-database-design/sql/tables/DBMake.sql
@@ -41,7 +30,7 @@ Worked from the repository root in GitHub Codespaces. Commands after step 3 were
 
    Evidence: [Database setup](sql/outputs/DBMake.png).
 
-5. Loaded the test data:
+3. Loaded the test data:
 
    ```text
    \set ON_ERROR_STOP on
@@ -50,7 +39,7 @@ Worked from the repository root in GitHub Codespaces. Commands after step 3 were
 
    Evidence: [Test data](sql/outputs/DBTestData.png).
 
-6. Ran the sections in [DBNegativeTest.sql](sql/tests/DBNegativeTest.sql) individually, including the before/after counts:
+4. Ran the sections in [DBNegativeTest.sql](sql/tests/DBNegativeTest.sql) individually, including the before/after counts:
 
    ```text
    \set ON_ERROR_STOP off
@@ -58,7 +47,7 @@ Worked from the repository root in GitHub Codespaces. Commands after step 3 were
 
    Evidence: [Baseline and stock](<sql/outputs/NegTest 0,1.png>), [shift, quantities and reason](<sql/outputs/NegTest 2,3,4.png>), [duplicate product and final counts](<sql/outputs/NegTest 5,6.png>).
 
-7. Ran both sections in [DBPositiveTest.sql](sql/tests/DBPositiveTest.sql): historical rates with `ROLLBACK`, then the successful sale with `COMMIT`:
+5. Ran both sections in [DBPositiveTest.sql](sql/tests/DBPositiveTest.sql): historical rates with `ROLLBACK`, then the successful sale with `COMMIT`:
 
    ```text
    \set ON_ERROR_STOP on
@@ -66,7 +55,7 @@ Worked from the repository root in GitHub Codespaces. Commands after step 3 were
 
    Evidence: [Historical rates](<sql/outputs/PosTest 1.png>), [sale commands](<sql/outputs/PosTest 2 Query.png>), [sale results](<sql/outputs/PosTest 2 Result.png>).
 
-8. Saved the [screenshots](sql/outputs/) and checked the results.
+6. Saved the [screenshots](sql/outputs/) and checked the results.
 
 **Results:**
 

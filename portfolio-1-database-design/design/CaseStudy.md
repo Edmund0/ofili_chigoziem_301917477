@@ -4,7 +4,7 @@
 
 A retail point-of-sale (POS) and inventory system for one neighbourhood supermarket. Cashiers open a till shift on a checkout terminal, record sales made up of several line items, and close the shift at the end of the day. The system keeps product stock up to date as goods are sold and received.
 
-## Users
+## User Requirements
 
 #### Cashiers
 
@@ -29,7 +29,7 @@ A retail point-of-sale (POS) and inventory system for one neighbourhood supermar
 6. Report revenue by day and payment method.
 7. Give items away as part of a sale and report giveaways by product and reason.
 
-## Business rules
+## Business Rules and Constraints
 
 #### 1. Staff and roles
 
@@ -98,7 +98,7 @@ A retail point-of-sale (POS) and inventory system for one neighbourhood supermar
 - If any sale line would make stock negative, the whole sale is rejected.
 - If any part fails, no part of the sale is saved.
 
-## Scope
+## Design Scope
 
 One store, two terminals and fictional records.
 
