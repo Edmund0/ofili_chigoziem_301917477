@@ -21,15 +21,7 @@ Reference: [W3Schools SQL quick reference](https://www.w3schools.com/sql/sql_qui
 
 Reference: [PostgreSQL 16 constraints](https://www.postgresql.org/docs/16/ddl-constraints.html).
 
-Reference: [INSERT examples](https://www.postgresql.org/docs/16/sql-insert.html#SQL-INSERT-EXAMPLES).
-
-Reference: [Scalar subqueries](https://www.postgresql.org/docs/16/sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES).
-
 Reference: [VALUES lists](https://www.postgresql.org/docs/16/queries-values.html).
-
-Reference: [SELECT, FROM and WHERE examples](https://www.postgresql.org/docs/16/tutorial-select.html).
-
-Reference: [JOIN examples](https://www.postgresql.org/docs/16/tutorial-join.html).
 
 Reference: [UPDATE with RETURNING](https://www.postgresql.org/docs/16/dml-returning.html).
 
