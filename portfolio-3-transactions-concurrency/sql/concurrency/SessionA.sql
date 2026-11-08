@@ -1,6 +1,6 @@
 -- SESSION A:
 
--- A0. SET TERMINAL TO A
+-- A0. NAME SESSION A AND BEGIN:
 --== Name Session A and use READ COMMITTED.
 SET application_name = 'p3_session_a';
 BEGIN ISOLATION LEVEL READ COMMITTED;

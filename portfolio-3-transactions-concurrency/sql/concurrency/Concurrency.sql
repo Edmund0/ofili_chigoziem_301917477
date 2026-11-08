@@ -1,19 +1,23 @@
 -- RUN SETUP ON TERMINAL A:
---== Run Setup.sql before A1.
+--== Run Setup.sql before A0.
 
+-- RUN A0 (ON TERMINAL A):
+--== Name Session A and begin its transaction.
+
+-- RUN B0 (ON TERMINAL B):
+--== Connect to the concurrency database, then name Session B and begin its transaction.
 
 -- RUN A1 (ON TERMINAL A):
---== Leave the transaction open. Run B1 in Session B.
+--== Open T03 and leave the transaction uncommitted.
 
 -- RUN B1 (ON TERMINAL B):
---== While this waits, run A2 in Session A.
+--== While the INSERT waits, switch to A2.
 
 -- RUN A2 (ON TERMINAL A):
---== Check B's wait, then commit in Session A.
+--== Capture B's Lock result, then commit and switch to B2.
 
 -- RUN B2 (ON TERMINAL B):
---== After the duplicate-key error, roll back Session B and check the saved shift.
-
+--== Roll back after the duplicate-key error and check the saved shift.
 
 -- RUN CLEANUP ON TERMINAL A:
---== Exit Session B, then run Cleanup.sql after saving results.
+--== Save results and exit Session B with \q, then run Cleanup.sql.

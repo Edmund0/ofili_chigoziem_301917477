@@ -1,7 +1,7 @@
 -- SESSION B:
--- Run B1 after A1; run B2 after A2.
+-- Run B0 before B1; run B1 after A1 and B2 after A2.
 
--- B0. SET TERMINAL TO SESSION B
+-- B0. NAME SESSION B AND BEGIN:
 --== Name Session B and use READ COMMITTED.
 SET application_name = 'p3_session_b';
 BEGIN ISOLATION LEVEL READ COMMITTED;
