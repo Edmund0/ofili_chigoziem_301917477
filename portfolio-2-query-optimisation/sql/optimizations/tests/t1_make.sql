@@ -14,4 +14,4 @@ WHERE NOT EXISTS (
 \connect pos_portfolio_benchmark
 
 \\ -- creates database tables
-\ir ../../../portfolio-1-database-design/sql/tables/DBSchema.sql
+\ir ../../../../portfolio-1-database-design/sql/tables/DBSchema.sql

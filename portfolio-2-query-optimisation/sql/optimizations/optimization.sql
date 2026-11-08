@@ -15,7 +15,7 @@ END;
 $$;
 
 -- 3. LOAD Q2 AND SET THE DATE RANGE:
-\ir queries/q2_total_revenue.sql
+\ir ../queries/q2_total_revenue.sql
 \set start_date '2000-01-15 00:00:00+00'
 \set end_date   '2000-01-16 00:00:00+00'
 
