@@ -52,6 +52,7 @@ Author: Chigoziem Edmund Ofili (301917477)
 | --- | --- |
 | [Queries](sql/queries.sql) | SQL reports. |
 | [Optimisation](sql/optimization.sql) | Performance comparison SQL. |
+| [Portfolio 1 optimisation](sql/optimizations/optimization_1.sql) | Compare Q2 on existing data; roll back the test index. |
 
 **Results and screenshots:**
 
