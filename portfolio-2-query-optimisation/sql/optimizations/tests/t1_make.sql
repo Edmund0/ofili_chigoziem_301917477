@@ -10,8 +10,8 @@ WHERE NOT EXISTS (
 )
 \gexec               \\ -- executes 'CREATE DATABASE pos_portfolio_benchmark' if it does not exist
 
-\\ -- connects to database
+-- connects to database
 \connect pos_portfolio_benchmark
 
-\\ -- creates database tables
+-- creates database tables
 \ir ../../../../portfolio-1-database-design/sql/tables/DBSchema.sql
