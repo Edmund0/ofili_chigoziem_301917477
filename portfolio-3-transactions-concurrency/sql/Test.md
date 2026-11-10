@@ -4,29 +4,29 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 ## Test setup
 
-Run from the repository root in Codespaces. 
+I ran the tests from the repository root in Codespaces.
 
-Both setups load the existing Portfolio 1 schema and test data into separate practice databases, then add T03.
+I loaded the Portfolio 1 schema and test data into separate practice databases, then added T03.
 
 | Test | Database | Starting state |
 | --- | --- | --- |
 | Transactions | pos_portfolio_transactions | T03 has one open shift. |
 | Concurrency | pos_portfolio_concurrency | T03 has no shifts. |
 
-Complete the [PostgreSQL environment setup](../../portfolio-1-database-design/design/Setup.md) and leave psql open in Terminal A.
+To reproduce the tests, complete the [PostgreSQL environment setup](../../portfolio-1-database-design/design/Setup.md) and leave psql open in Terminal A. Run the following commands from the repository root.
 
 Evidence: [Concurrency setup](outputs/ConcurrentSetup.png).
 
 ## Transaction test
 
-Transactions.sql lists the order. Run setup, then the session in the same psql terminal:
+I ran setup, then the transaction session in the same psql terminal. To reproduce this, run:
 
 ```text
 \i portfolio-3-transactions-concurrency/sql/transactions/Setup.sql
 \i portfolio-3-transactions-concurrency/sql/transactions/Session.sql
 ```
 
-Save the committed closing time, invalid-closing-time error and final open-shift count. Then drop the transaction practice database:
+I recorded the committed closing time, invalid-closing-time error and final open-shift count. Save those results before removing the transaction practice database with:
 
 ```text
 \i portfolio-3-transactions-concurrency/sql/transactions/Cleanup.sql
@@ -34,15 +34,15 @@ Save the committed closing time, invalid-closing-time error and final open-shift
 
 ## Concurrency test
 
-In Terminal A's psql session, create and populate the concurrency database:
+I created and populated the concurrency database in Terminal A. To reproduce this, run:
 
 ```text
 \i portfolio-3-transactions-concurrency/sql/concurrency/Setup.sql
 ```
 
-Setup.sql connects Terminal A to the concurrency database automatically.
+Setup.sql connected Terminal A to the concurrency database automatically.
 
-If Terminal B is already inside psql at `postgres=#`, run this line on its own and press Enter:
+I connected Terminal B to the same database. If you are already inside psql at `postgres=#`, run this line on its own and press Enter:
 
 ```text
 \connect pos_portfolio_concurrency
@@ -56,20 +56,20 @@ If Terminal B is a new shell terminal, open psql connected to that database inst
 sudo runuser -u postgres -- psql -d pos_portfolio_concurrency
 ```
 
-Copy and run the labelled sections from SessionA.sql and SessionB.sql in this order. Do not run either whole file at once.
+I ran the labelled sections from SessionA.sql and SessionB.sql in the order below. To reproduce the test, follow this order rather than running either whole file at once.
 
-| Order | Session | Section | Action |
+| Order | Session | Section | What I did |
 | --- | --- | --- | --- |
-| 1 | A | A0 | Name Session A and begin the READ COMMITTED transaction. |
-| 2 | B | B0 | Name Session B and begin the READ COMMITTED transaction. |
-| 3 | A | A1 | Open T03; leave the transaction uncommitted. |
-| 4 | B | B1 | Check visibility, then attempt the competing shift. Switch to A while the INSERT waits. |
-| 5 | A | A2 | Capture p3_session_b with Lock, then commit. Switch back to B. |
-| 6 | B | B2 | After the duplicate-key error, roll back and check the saved shift. |
+| 1 | A | A0 | Named Session A and began the READ COMMITTED transaction. |
+| 2 | B | B0 | Named Session B and began the READ COMMITTED transaction. |
+| 3 | A | A1 | Opened T03 and left the transaction uncommitted. |
+| 4 | B | B1 | Checked visibility, then attempted the competing shift. Switched to A while the INSERT waited. |
+| 5 | A | A2 | Captured p3_session_b with Lock, then committed and switched back to B. |
+| 6 | B | B2 | Rolled back after the duplicate-key error and checked the saved shift. |
 
-Save B's visibility count, the waiting state before A commits, the duplicate-key error and the final shift.
+I saved B's visibility count, its lock wait before A committed, the duplicate-key error and the final shift.
 
-After saving results, exit Session B with `\q`. In Session A, run:
+After saving the results, I exited Session B with `\q` and ran Cleanup.sql in Session A. To reproduce the cleanup, exit B first, then run in A:
 
 ```text
 \i portfolio-3-transactions-concurrency/sql/concurrency/Cleanup.sql
@@ -81,11 +81,11 @@ Evidence: [Concurrency cleanup](outputs/ConcurrentCleanup.png). The concurrency 
 
 ## Results
 
-Section 3 deliberately sets `closed_at = opened_at`.
+In section 3, I deliberately set `closed_at = opened_at`.
 
-This violates `ck_shift_close_after_open`, which requires closing after opening. 
+This violated `ck_shift_close_after_open`, which requires closing after opening.
 
-`ROLLBACK` removes the new shift; the earlier committed closure remains.
+`ROLLBACK` removed the new shift; the earlier committed closure remained.
 
 | Check | Observed result | Evidence |
 | --- | --- | --- |
