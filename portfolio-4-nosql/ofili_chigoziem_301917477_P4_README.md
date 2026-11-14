@@ -14,8 +14,6 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 ## References
 
-
-
 Reference: [MongoDB insertMany examples](https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/).
 
 Reference: [MongoDB aggregation with $sum](https://www.mongodb.com/docs/manual/reference/operator/aggregation/sum/).
