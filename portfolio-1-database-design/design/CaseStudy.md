@@ -2,32 +2,31 @@
 
 ## Case study
 
-A retail point-of-sale (POS) and inventory system for one neighbourhood supermarket. Cashiers open a till shift on a checkout terminal, record sales made up of several line items, and close the shift at the end of the day. The system keeps product stock up to date as goods are sold and received.
+GoodNaija, a growing supermarket in downtown Lagos, is in need of a point-of-sale (POS) and inventory tracking system. They require cashiers to be able to open their shifts on their assigned terminal, record sales, and close their shift at the end of the day. The system keeps track of the inventory in stock as produce are sold and received. 
 
-## User Requirements
+## Part 1: User Requirements
 
-#### Cashiers
+#### Store Cashiers
 
-- Open and close shifts.
-- Record sales.
-- Record giveaways with a reason.
+- Open and close shifts on a terminal.
+- Record sales and giveaways.
 
-#### Store supervisor
+#### Store Supervisors
 
-- Register staff and terminals.
+- Add staff and terminals.
 - Maintain products and prices.
 - Receive deliveries.
-- Review daily sales, giveaway and low-stock reports.
+- Review daily sales, giveaway, and low-stock reports.
 
 ## Main operations
 
-1. Open and close a till shift.
-2. Record a sale with one or more items.
-3. Take payment by cash, card or transfer.
-4. Receive new stock and view a receipt total.
-5. List products at or below their reorder level.
-6. Report revenue by day and payment method.
-7. Give items away as part of a sale and report giveaways by product and reason.
+1. The system can open/close a shift on a terminal.
+2. The system can record a sale with multiple items.
+3. The system can accept different payment methods (ex. cash, card or transfer).
+4. The system can accept new stock and view a receipt total.
+5. The system can list products at or below their reorder level.
+6. The system can report revenue by day and payment method.
+7. The system can cashiers can give items away as part of a sale and report giveaways.
 
 ## Business Rules and Constraints
 

@@ -2,15 +2,13 @@
 
 Author: Chigoziem Edmund Ofili (301917477)
 
-The basic entities and current relationships are shown below.
-
 ## Glossary
 
-- **PK:** primary key; identifies each record and is unique.
-- **FK:** foreign key; links to a record in another table.
-- **UK:** unique key; values cannot repeat.
-- **REQ:** required; cannot be NULL.
-- **OPT:** optional; may be NULL.
+- **PK (primary key):** identifies each record and is unique.
+- **FK (foreign key):** links to a record in another table.
+- **UK (unique key):** values cannot repeat.
+- **REQ (required):** required; cannot be NULL.
+- **OPT (optional):** optional; may be NULL.
 - **UK1:** sale_item.sale_id and product_id are unique together, not individually.
 
 PK, FK and UK markers can be combined.

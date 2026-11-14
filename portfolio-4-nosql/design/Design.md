@@ -4,7 +4,9 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 ## Document model
 
-Database: `pos_events`. Collection: `inventory_events`.
+Database: `pos_events`. 
+
+Collection: `inventory_events`.
 
 Each document records one delivery, sale or giveaway. Product and staff details are embedded snapshots. The `details` fields vary by event type.
 

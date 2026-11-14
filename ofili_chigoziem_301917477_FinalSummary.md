@@ -6,19 +6,33 @@
 
 ## Case study
 
-The case study covers one neighbourhood supermarket with two checkout terminals. Cashiers open shifts, record paid items and giveaways, and take cash, card or transfer payments. Supervisors maintain staff, products and prices, receive stock and review reports. The design excludes refunds, partial payments, user authentication and card processing. Fictional records support the exercises; the work is a database portfolio rather than a complete POS application.
+GoodNaija, a growing supermarket in downtown Lagos, is in need of a point-of-sale (POS) and inventory tracking system. The supermarket has two main checkout terminals, two cashiers, and one supervisor. The cashiers can open and close their shifts, record sales and giveaways, and accept cash, card or transfer payments. The supervisors maintain staff, products, prices, and receive stocks. The design excludes refunds, partial payments, user authentication and card processing.
 
 ## Portfolio 1: Database Design and Modelling
 
-The PostgreSQL design contains nine tables: role, staff, terminal, shift, product, sale, sale_item, tax and discount. The ER diagrams show their attributes, keys and relationships. The normalisation document follows example records through 1NF, 2NF and 3NF, explaining the removal of repeating lists, partial dependencies and transitive dependencies.
+GoodNaija's PostgreSQL database system was designed around its normal daily operations: opening and closing till shifts for staff, recording sales and giveaways, and keeping track of inventory. The design has nine tables: `role`, `staff`, `terminal`, `shift`, `product`, `sale`, `sale_item`, `tax` and `discount`. The [ER diagrams](portfolio-1-database-design/design/ERDiagram.md) shows the attributes, keys, and relations of the nine tables.
 
-Each product appears once per sale. Paid and giveaway quantities share a saved shelf price, while applied tax and discount percentages preserve historical values. Editing current rates does not change those saved percentages. Primary keys, foreign keys, unique constraints and checks protect the records [1]. A partial unique index permits only one open shift per terminal.
+**Normalization**: In order to minimize data redundancies and maintain data integrity, the database schema was designed to satisfy the the requirements of the third normal form. The [normalization examples](portfolio-1-database-design/design/Normalisation.md) demonstrates the process used to develope the schema through the first, second, and third normal forms (1NF, 2NF and 3NF).
 
-All five negative inserts were rejected and row counts stayed unchanged. The positive sale recorded two paid Beans and one giveaway, reduced stock from 50 to 47 and charged 1000.00. Updating current tax and discount rates left the saved percentages unchanged. Permission checks and requiring at least one sale item remain operation rules; foreign keys alone do not enforce them.
+In the normalization example:
+
+- **1NF**: A receipt's items column had a list of purchased items. Each item became a separate sales-item row. The 1NF requires all fields to be **atomic**.
+- **2NF**: A sales item was identified by receipt number and product SKU. However, receipt details depended only on receipt number, while product names depended only on the SKU. Products was moved to a separate table. 2NF requires non-key fields to depend on the whole key.
+- **3NF**: The details of staff, role, terminal, and shift were moved to their own tables to remove transitive dependencies. A sale identified a shift, and a shift identified the cashier and terminal.
+
+**Keys and Constraints**: Primary keys identify records, foreign keys keep related records connected, and unique and check constraints enforce rules such as preventing duplicate receipt numbers and negative stock [1]. A partial unique index prevents two shifts from being open on the same terminal at once.
+
+**Test**: The [tests](portfolio-1-database-design/sql/Test.md) showed that:
+
+- All five invalid inserts were rejected, with no change to the row counts.
+- A successful sale of two paid units of Beans and one giveaway reduced stock from 50 to 47 and charged 1000.00.
+- Changing current tax and discount rates left the percentages saved on existing sale items unchanged.
+
+Two rules still need to be enforced by the operations that use the database: checking staff permissions and ensuring every sale contains at least one item. The foreign keys do not enforce either rule on their own.
 
 ![Retail POS keys and relationships](summary-assets/POS_ERDiagram.svg)
 
-*Figure 1. Compact ER diagram of the nine tables, their keys and relationship cardinalities.*
+*Figure 1. The nine database tables, their keys and relationships.*
 
 ## Portfolio 2: Query Processing and Optimisation
 

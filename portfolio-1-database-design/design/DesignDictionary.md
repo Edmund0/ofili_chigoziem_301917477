@@ -4,8 +4,8 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 ## Glossary
 
-- **PK:** primary key; identifies each record.
-- **FK:** foreign key; links to a record in another table.
+- **PK (primary key):** identifies each record.
+- **FK (foreign key):** links to a record in another table.
 - **U:** unique; cannot repeat. Mermaid uses **UK** for this marker.
 - **R:** required; cannot be `NULL`.
 - **U1:** fields that are unique together, not individually.
@@ -17,7 +17,7 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 
 ## 1. Role Entity
 
-**Design Assumption**: Access is role-based. Staff with the same role have the same permissions.
+**Design Assumption**: The database system uses role-based accesss control (RBAC).
 
 ### Attributes and keys
 
