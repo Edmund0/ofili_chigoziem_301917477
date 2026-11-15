@@ -88,5 +88,5 @@ To demonstrate isolation and concurrency control, two sessions tried to open a s
 ### Results
 
 1. Session B could not see A's uncommitted shift.
-2. Session B waited for A to commit/save before its insert was rejected.
+2. Session B had to wait for A to commit/save before its insert was rejected.
 3. Only Session A's shift was commited/saved. The unique index prevented two open shifts on T03.

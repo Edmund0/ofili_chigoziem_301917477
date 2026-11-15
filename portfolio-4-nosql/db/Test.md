@@ -30,7 +30,7 @@ To demonstrate the document model's collections, nosql, as another database solu
 ## Results
 
 1. MongoDB accepted all four events: E001, E002, E003 and E004.
-2. Q1 returned 4 events, compared with 0 before loading the script.
-3. Q2 returned the three Rice events in order: delivery, sale, and giveaway.
-4. Q3 returned giveaway E003 with the reason Buy 2, get 1 free.
+2. Q1 returned 4 events.
+3. Q2 returned the 3 Rice events in order: delivery, sale, and giveaway.
+4. Q3 returned giveaway E003 that had the reason Buy 2, get 1 free.
 5. Q4 returned a net quantity change of 7 for Rice and 5 for Soap.
