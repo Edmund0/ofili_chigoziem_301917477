@@ -50,4 +50,4 @@ Author: Chigoziem Edmund Ofili (301917477)
 5. The date index gave no measured improvement on the much smaller Portfolio 1 records.
 6. On the benchmark records, the median execution time decreased from 5.434 ms to 1.798 ms.
 
-The detailed optimisation results are in [Optimisation.md](Optimisation.md).
+The detailed optimisation results are in [OptimisationResults.md](OptimisationResults.md).

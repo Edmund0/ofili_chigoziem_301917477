@@ -14,8 +14,6 @@
 | [Test data](sql/tests/DBTestData.sql) | Fictional records for the tests. |
 | [Negative tests](sql/tests/DBNegativeTest.sql) | Invalid inserts and row counts before and after testing. |
 | [Positive tests](sql/tests/DBPositiveTest.sql) | Run the rate-history and completed-sale checks in order. |
-| [Historical rates](sql/tests/DBHistoricalRatesTest.sql) | Change current rates and inspect saved sale percentages. |
-| [Completed sale](sql/tests/DBSaleTest.sql) | Record paid and giveaway quantities and reduce stock. |
 
 ## References
 

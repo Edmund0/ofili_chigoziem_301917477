@@ -5,6 +5,8 @@ MIT 8103 Advanced Database System
 
 **Student ID**: 301917477
 
+**Repository**: https://github.com/Edmund0/ofili_chigoziem_301917477
+
 ## Case study
 
 GoodNaija, a growing supermarket in downtown Lagos, is in need of a point-of-sale (POS) and inventory tracking system. They require cashiers to be able to open their shifts on their assigned terminal, record sales, and close their shift at the end of the day. The system keeps track of the inventory in stock as produce are sold and received. 

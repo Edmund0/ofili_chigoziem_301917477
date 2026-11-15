@@ -15,7 +15,6 @@ Author: Chigoziem Edmund Ofili (301917477)
 | [Q4](sql/queries/q4_low_stock.sql) | Low-stock report. |
 | [Original-data optimisation](sql/optimizations/optimization_1.sql) | Compare Q2 on Portfolio 1 data; roll back the test index. |
 | [Benchmark optimisation](sql/optimizations/optimization.sql) | Compare Q2 on a larger dataset. |
-| [Measurements](sql/optimizations/measurements.sql) | One warm-up and three execution plans for each phase. |
 | [Benchmark setup](sql/optimizations/tests/t0_setup.sql) | Create and load the benchmark database. |
 | [Database creation](sql/optimizations/tests/DBOptData_Make.sql) | Create the benchmark database and tables. |
 | [Baseline records](sql/optimizations/tests/DBOptData_Baseline.sql) | Staff, products, tax and discount records. |
