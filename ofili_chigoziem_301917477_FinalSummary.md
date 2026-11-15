@@ -101,7 +101,7 @@ The repository contains the scripts, screenshots and detailed test records: [P1]
 
 ## Individual reflection
 
-**Design Choice**: In my original design, I initially recorded paid items and giveaway items on separate rows. However, this repeated the prices when the same product was both sold and given away on the same sale. The clearly violated 3NF requirement. In order to avoid an awkward arrangment where a separate table would be created, I instead update the design to store the quantities in their own columns. This allowed them to share one saved price while still recording how many units were paid for and how many were given away.
+**Design Choice**: In my original design, I initially recorded paid items and giveaway items on separate rows. However, this repeated the prices when the same product was both sold and given away on the same sale. The price depended on only part of the proposed composite key, which violated 2NF. In order to avoid an awkward arrangment where a separate table would be created, I instead update the design to store the quantities in their own columns. This allowed them to share one saved price while still recording how many units were paid for and how many were given away.
 
 **Challenges**: Adding an index did not automatically improve the query's execution time. My first test was on a small database which showed no improvement. I later tested the same query on a much larger database, where PostgreSQL used the index and the query ran faster. Comparing both results helped me understand why an index should be tested rather than assumed to improve performance.
 

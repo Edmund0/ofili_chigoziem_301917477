@@ -1,7 +1,7 @@
 # advanced-database-portfolio
 MIT 8103 Advanced Database System
 
-**Name**: Chigoziem Edmund
+**Name**: Chigoziem Edmund Ofili
 
 **Student ID**: 301917477
 
