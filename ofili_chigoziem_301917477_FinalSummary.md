@@ -2,7 +2,7 @@
 
 **Author:** Chigoziem Edmund Ofili (301917477)<br>
 **Case study:** Retail POS and Inventory System<br>
-**Repository:** https://github.com/Edmund0/advanced-database-portfolio
+**Repository:** https://github.com/Edmund0/ofili_chigoziem_301917477
 
 ## Case study
 
@@ -97,7 +97,7 @@ For the fifth portfolio, a cloud database solution was proposed for GoodNaija's 
 
 ## Evidence
 
-The repository contains the scripts, screenshots and detailed test records: [P1](https://github.com/Edmund0/advanced-database-portfolio/blob/main/portfolio-1-database-design/sql/Test.md), [P2](https://github.com/Edmund0/advanced-database-portfolio/blob/main/portfolio-2-query-optimisation/sql/Test.md), [P3](https://github.com/Edmund0/advanced-database-portfolio/blob/main/portfolio-3-transactions-concurrency/sql/Test.md), and [P4](https://github.com/Edmund0/advanced-database-portfolio/blob/main/portfolio-4-nosql/db/Test.md). [P5](https://github.com/Edmund0/advanced-database-portfolio/blob/main/portfolio-5-distributed-cloud/ofili_chigoziem_301917477_P5_README.md) contains the proposed deployment discussion. The separate practice databases keep the transaction and concurrency exercises distinct from the original POS query results.
+The repository contains the scripts, screenshots and detailed test records: [P1](https://github.com/Edmund0/ofili_chigoziem_301917477/blob/main/portfolio-1-database-design/sql/Test.md), [P2](https://github.com/Edmund0/ofili_chigoziem_301917477/blob/main/portfolio-2-query-optimisation/sql/Test.md), [P3](https://github.com/Edmund0/ofili_chigoziem_301917477/blob/main/portfolio-3-transactions-concurrency/sql/Test.md), and [P4](https://github.com/Edmund0/ofili_chigoziem_301917477/blob/main/portfolio-4-nosql/db/Test.md). [P5](https://github.com/Edmund0/ofili_chigoziem_301917477/blob/main/portfolio-5-distributed-cloud/ofili_chigoziem_301917477_P5_README.md) contains the proposed deployment discussion. The separate practice databases keep the transaction and concurrency exercises distinct from the original POS query results.
 
 ## Individual reflection
 
