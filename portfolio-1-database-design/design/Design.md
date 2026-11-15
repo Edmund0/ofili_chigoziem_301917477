@@ -4,8 +4,6 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 ## Entities
 
-I have chosen the following entities for my project.
-
 | Entity | Information stored | Why we need it |
 | --- | --- | --- |
 | staff | A cashier or supervisor | Keep track of staff. |
@@ -22,7 +20,7 @@ I have chosen the following entities for my project.
 
 | Tables linked | Relationship | Meaning |
 | --- | --- | --- |
-| role → staff | One to many | A role can have zero or more staff. Each staff member has one role. |
+| role → staff | One to many | A role can have zero or more staff. A staff member has one role. |
 | staff → shift | One to many | A staff member can work zero or more shifts. Each shift has one cashier. |
 | terminal → shift | One to many over time | A terminal can have zero or more shifts. Each shift uses one terminal. |
 | shift → sale | One to many | A shift can have zero or more sales. Each sale belongs to one shift. |

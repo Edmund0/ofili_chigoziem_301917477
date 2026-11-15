@@ -2,26 +2,26 @@
 
 Author: Chigoziem Edmund Ofili (301917477)
 
-R-101 and R-102 are fictional examples created to explain the design. They are not receipts from the database or reference dataset. Selected fields are shown.
+In order to explain the normalization process and why the database system satisfies the normal forms, we shall shart with an example where the requirements where normal forms are not met.
 
 ## Key terms
 
-- **Candidate key:** a column or combination that can uniquely identify a row, such as (receipt_number, sku) which uniquely identifies an item.
 - **Primary key:** the candidate key chosen as the main identifier.
-- **Non-prime attribute:** a column that belongs to none of the candidate keys, such as paid_qty or unit_price_at_sale.
+- **Candidate key:** a column (or combination of columns) that can uniquely identify a row.
+- **Non-prime attribute:** a column that belongs to none of the candidate keys.
 
 ## Starting record
 
-One row represents one receipt. R-101 holds a list of values in each item column: Rice first, then Soap.
+One row represents one receipt and contains all the information associated with that receipt.
 
-| Receipt | Shift | Staff code | First name | Last name | Role | Terminal | Items | Paid qty | Giveaway qty | Unit price | Tax ID | Saved tax % | Discount ID | Saved discount % | Giveaway reason |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| R-101 | 10 | C001 | Amina | Yusuf | Cashier | T01 | RICE: Rice; SOAP: Soap | 2; 3 | 1; 0 | 1000; 200 | 2; 1 | 5; 0 | 2; 1 | 10; 0 | Buy 2, get 1 free; NULL |
-| R-102 | 11 | C002 | Bala | Musa | Cashier | T02 | RICE: Rice | 1 | 0 | 1000 | 2 | 10 | 1 | 0 | NULL |
+| Receipt | SKU | Shift ID | Staff code | First name | Last name | Role | Terminal code | Product name | Paid qty | Giveaway qty | Unit price | Giveaway reason | Tax ID | Tax name | Current tax % | Saved tax % | Discount ID | Discount name | Current discount % | Saved discount % |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| R-101 | RICE; SOAP | 10 | C001 | Amina | Yusuf | Cashier | T01 | Rice; Soap | 2; 3 | 1; 0 | 1000; 200 | Buy 2, get 1 free; NULL | 2; 1 | Example tax; No tax | 10; 0 | 5; 0 | 2; 1 | Promotion; No discount | 15; 0 | 10; 0 |
+| R-102 | RICE | 11 | C002 | Bala | Musa | Cashier | T02 | Rice | 1 | 0 | 1000 | NULL | 2 | Example tax | 10 | 10 | 1 | No discount | 0 | 0 |
 
 ### Current rates
 
-The receipt keeps its saved rate even when the current rate changes.
+The receipt keeps its saved rate even when tax/discount records changes.
 
 | Type | ID | Name | Current rate |
 | --- | --- | --- | --- |
@@ -32,227 +32,172 @@ The receipt keeps its saved rate even when the current rate changes.
 
 ## First normal form (1NF)
 
-**Requirements**: Each field is **atomic** — it contains one value, not a list or nested table.
+**Requirements**: Each field is **atomic**. It contains one value, not a list nor nested table.
 
 **Example**:
 
-- Each product on a receipt has one row.
-- The wide table is shown in four parts below.
-- All four parts describe the same three rows. They are not separate tables yet.
+- Each product on a receipt must have one row.
 
-### Receipt details
+| Receipt | SKU | Shift ID | Staff code | First name | Last name | Role | Terminal code | Product name | Paid qty | Giveaway qty | Unit price | Giveaway reason | Tax ID | Tax name | Current tax % | Saved tax % | Discount ID | Discount name | Current discount % | Saved discount % |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| R-101 | RICE | 10 | C001 | Amina | Yusuf | Cashier | T01 | Rice | 2 | 1 | 1000 | Buy 2, get 1 free | 2 | Example tax | 10 | 5 | 2 | Promotion | 15 | 10 |
+| R-101 | SOAP | 10 | C001 | Amina | Yusuf | Cashier | T01 | Soap | 3 | 0 | 200 | NULL | 1 | No tax | 0 | 0 | 1 | No discount | 0 | 0 |
+| R-102 | RICE | 11 | C002 | Bala | Musa | Cashier | T02 | Rice | 1 | 0 | 1000 | NULL | 2 | Example tax | 10 | 10 | 1 | No discount | 0 | 0 |
 
-| Receipt | SKU | Shift | Staff code | First name | Last name | Role | Terminal |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| R-101 | RICE | 10 | C001 | Amina | Yusuf | Cashier | T01 |
-| R-101 | SOAP | 10 | C001 | Amina | Yusuf | Cashier | T01 |
-| R-102 | RICE | 11 | C002 | Bala | Musa | Cashier | T02 |
-
-### Item details
-
-| Receipt | SKU | Product name | paid_qty | giveaway_qty | unit_price_at_sale | giveaway_reason |
-| --- | --- | --- | --- | --- | --- | --- |
-| R-101 | RICE | Rice | 2 | 1 | 1000 | Buy 2, get 1 free |
-| R-101 | SOAP | Soap | 3 | 0 | 200 | NULL |
-| R-102 | RICE | Rice | 1 | 0 | 1000 | NULL |
-
-### Tax details
-
-| Receipt | SKU | tax_id | tax_name | current_tax_percentage | tax_percentage_at_sale |
-| --- | --- | --- | --- | --- | --- |
-| R-101 | RICE | 2 | Example tax | 10 | 5 |
-| R-101 | SOAP | 1 | No tax | 0 | 0 |
-| R-102 | RICE | 2 | Example tax | 10 | 10 |
-
-### Discount details
-
-| Receipt | SKU | discount_id | discount_name | current_discount_percentage | discount_percentage_at_sale |
-| --- | --- | --- | --- | --- | --- |
-| R-101 | RICE | 2 | Promotion | 15 | 10 |
-| R-101 | SOAP | 1 | No discount | 0 | 0 |
-| R-102 | RICE | 1 | No discount | 0 | 0 |
-
-**Key:** (receipt_number, sku). A product appears once per receipt, with paid and giveaway quantities in the same row.
+**Key:** (Receipt, SKU). A product appears once per receipt, with paid and giveaway quantities in the same row.
 
 **Result**:
 - Item lists are gone.
-- Receipt details still repeat for each product.
-- Product names still repeat across receipts.
+- Some information are repeated on the rows.
 
 ## Second normal form (2NF)
 
-**Requirements**: 1NF, with every **non-prime attribute** depending on the whole of every candidate key.
+**Requirements**: 1NF, with every **non-prime attribute** depending on the whole of every **candidate key**.
 
-**Example**: I initially stored paid items and giveaway items on separate rows in the same table, using `quantity` and `line_type`.
+**Problem During the Design Phase**: I initially stored paid items and giveaway items on separate rows in the same table, using `quantity` and `Line type`.
 
-- The key was `(sale_id, product_id, line_type)`, but `unit_price_at_sale` depended only on `(sale_id, product_id)`.
-- The price did not depend on `line_type`, so it depended on only part of the key.
-- This partial dependency violated 2NF.
-- I changed this to one row with `paid_qty` and `giveaway_qty` sharing one price.
-- This prevents conflicting shelf prices for the same product on one receipt, without adding a separate shared-price table that could make complex queries inefficient.
+- The candidate key was `(Sale ID, Product ID, Line type)`.
+- The `Unit price` depended only on `(Sale ID, Product ID)` which violated 2NF.
+- This was a partial dependency situation.
+- I changed this to one row with `Paid qty` and `Giveaway qty` sharing one price.
 
-**Definition**: A **partial dependency** means a detail depends on only part of a combined key.
+This prevents conflicting shelf prices for the same product on one receipt, without adding a separate shared-price table that could make complex queries inefficient.
 
-- `receipt_number` determines the shift, staff and terminal details.
-- `sku` determines `product_name`.
+**Definition**: A **partial dependency** means a detail depends on only part of a combined **candidate key**.
+
+- `Receipt` determines the shift, staff and terminal details.
+- `SKU` determines `Product name`.
 - Quantities, historical price, selected tax/discount and saved percentages describe the product on that particular receipt.
 
-### Sale
+### Example: Sale
 
-**Key:** receipt_number.
+**Key:** Receipt.
 
-| Receipt | Shift | Staff code | First name | Last name | Role | Terminal |
+| Receipt | Shift ID | Staff code | First name | Last name | Role | Terminal code |
 | --- | --- | --- | --- | --- | --- | --- |
 | R-101 | 10 | C001 | Amina | Yusuf | Cashier | T01 |
 | R-102 | 11 | C002 | Bala | Musa | Cashier | T02 |
 
-### Product
+### Example: Product
 
-**Key:** sku.
+**Key:** SKU.
 
 | SKU | Product name |
 | --- | --- |
 | RICE | Rice |
 | SOAP | Soap |
 
-### Sale item
+### Example: Sale item
 
-**Key:** (receipt_number, sku). Receipt and SKU link to the two tables above.
+**Key:** (Receipt, SKU). Receipt and SKU link to the two tables above.
 
-| Receipt | SKU | paid_qty | giveaway_qty | unit_price_at_sale | giveaway_reason |
-| --- | --- | --- | --- | --- | --- |
-| R-101 | RICE | 2 | 1 | 1000 | Buy 2, get 1 free |
-| R-101 | SOAP | 3 | 0 | 200 | NULL |
-| R-102 | RICE | 1 | 0 | 1000 | NULL |
+| Receipt | SKU | Paid qty | Giveaway qty | Unit price | Giveaway reason | Tax ID | Tax name | Current tax % | Saved tax % | Discount ID | Discount name | Current discount % | Saved discount % |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| R-101 | RICE | 2 | 1 | 1000 | Buy 2, get 1 free | 2 | Example tax | 10 | 5 | 2 | Promotion | 15 | 10 |
+| R-101 | SOAP | 3 | 0 | 200 | NULL | 1 | No tax | 0 | 0 | 1 | No discount | 0 | 0 |
+| R-102 | RICE | 1 | 0 | 1000 | NULL | 2 | Example tax | 10 | 10 | 1 | No discount | 0 | 0 |
 
-Tax and discount details are still columns of sale_item at this stage. They are shown separately to keep the table narrow.
+### Example: Result
 
-#### Tax columns
-
-| Receipt | SKU | tax_id | tax_name | current_tax_percentage | tax_percentage_at_sale |
-| --- | --- | --- | --- | --- | --- |
-| R-101 | RICE | 2 | Example tax | 10 | 5 |
-| R-101 | SOAP | 1 | No tax | 0 | 0 |
-| R-102 | RICE | 2 | Example tax | 10 | 10 |
-
-#### Discount columns
-
-| Receipt | SKU | discount_id | discount_name | current_discount_percentage | discount_percentage_at_sale |
-| --- | --- | --- | --- | --- | --- |
-| R-101 | RICE | 2 | Promotion | 15 | 10 |
-| R-101 | SOAP | 1 | No discount | 0 | 0 |
-| R-102 | RICE | 1 | No discount | 0 | 0 |
-
-**Result**:
 - Receipt details are stored once per receipt.
 - Product names are stored once per product.
-- Paid and giveaway quantities share one historical shelf price.
 - Renaming Rice changes one product row, not every receipt item.
 
-**Historical price**: It stays with the sale item because the same product can have a different price on a later receipt.
+**Historical price**: The sale item records the price of a product at the time of purchase because the product records may be changed later.
 
 ## Third normal form (3NF)
 
-**Requirements**: 2NF. Fields that determine another **non-prime attribute** must also identify the whole row.
+**Requirements**: 2NF. Every **non-prime attribute** must depend on a **candidate key**, without a transitive dependency through another non-prime attribute.
+
+**Definition**: A **transitive dependency** means one detail determines another due to a third field.
 
 **Example**:
-- The receipt identifies the staff code.
-- The staff code identifies the staff name.
-- The name belongs with staff, rather than being repeated on each receipt.
-
-**Definition**: A **transitive dependency** means one detail leads to another through a third field.
+- The receipt number determines the staff code.
+- The staff code determines the staff name.
+- The staff code and staff name should be separated from the table.
 
 **Dependencies in the 2NF tables**:
-- receipt_number → shift_id → staff_code and terminal_code.
-- staff_code → first_name, last_name and role.
-- staff_code → role → role permissions.
-- tax_id → tax name and current tax percentage.
-- discount_id → discount name and current discount percentage.
+- Receipt → Shift ID → Staff code and Terminal code.
+- Staff code → First name, Last name and role.
+- Staff code → role → role permissions.
+- Tax ID → tax name and current tax percentage.
+- Discount ID → discount name and current discount percentage.
 
 **Changes**:
 - Staff, role and terminal details move to their own tables.
-- Shift links the cashier and terminal. Sale keeps `shift_id` for those links.
+- Shift links the cashier and terminal. Sale keeps `Shift ID` for those links.
 - Tax and discount definitions move to their own tables.
-- Saved percentages stay on `sale_item` because they record what was applied to that item.
 
-**Result**: Changing a staff name or current tax/discount definition changes one record, rather than repeating the change across receipt items.
+**Result**: If we change a staff name or current tax/discount definition, we only change the one record rather than repeating the change across receipt items.
 
 ### Role
 
 **PK:** id.<br>**UK:** name.
 
-| id | name |
+| ID | Role |
 | --- | --- |
 | 1 | Cashier |
 
 ### Staff
 
-**PK:** id.<br>**UK:** staff_code and email, separately.<br>**FK:** role_id → role.id.
+**PK:** id.<br>**UK:** Staff code and email, separately.<br>**FK:** Role ID → role.id.
 
-| id | staff_code | first_name | last_name | role_id |
+| ID | Staff code | First name | Last name | Role ID |
 | --- | --- | --- | --- | --- |
 | 1 | C001 | Amina | Yusuf | 1 |
 | 2 | C002 | Bala | Musa | 1 |
 
 ### Terminal
 
-**PK:** id.<br>**UK:** terminal_code.
+**PK:** id.<br>**UK:** Terminal code.
 
-| id | terminal_code |
+| ID | Terminal code |
 | --- | --- |
 | 1 | T01 |
 | 2 | T02 |
 
 ### Shift
 
-**PK:** id.<br>**FK:** staff_id → staff.id; terminal_id → terminal.id.
+**PK:** id.<br>**FK:** Staff ID → staff.id; Terminal ID → terminal.id.
 
-| id | staff_id | terminal_id |
+| ID | Staff ID | Terminal ID |
 | --- | --- | --- |
 | 10 | 1 | 1 |
 | 11 | 2 | 2 |
 
 ### Sale
 
-**PK:** id.<br>**UK:** receipt_number.<br>**FK:** shift_id → shift.id.
+**PK:** id.<br>**UK:** Receipt.<br>**FK:** Shift ID → shift.id.
 
-| id | receipt_number | shift_id |
+| ID | Receipt | Shift ID |
 | --- | --- | --- |
 | 1 | R-101 | 10 |
 | 2 | R-102 | 11 |
 
 ### Product
 
-**PK:** id.<br>**UK:** sku.
+**PK:** id.<br>**UK:** SKU.
 
-| id | sku | name |
+| ID | SKU | Product name |
 | --- | --- | --- |
 | 1 | RICE | Rice |
 | 2 | SOAP | Soap |
 
 ### Sale item
 
-**PK:** id.<br>**UK:** (sale_id, product_id).<br>**FK:** sale_id, product_id, tax_id and discount_id → the corresponding tables' id fields.
+**PK:** id.<br>**UK:** (Sale ID, Product ID).<br>**FK:** Sale ID, Product ID, Tax ID and Discount ID → the corresponding tables' id fields.
 
-| id | sale_id | product_id | paid_qty | giveaway_qty | unit_price_at_sale | giveaway_reason |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | 1 | 1 | 2 | 1 | 1000 | Buy 2, get 1 free |
-| 2 | 1 | 2 | 3 | 0 | 200 | NULL |
-| 3 | 2 | 1 | 1 | 0 | 1000 | NULL |
-
-The following columns belong to the same sale_item rows. They are shown separately to avoid a wide table.
-
-| id | tax_id | tax_percentage_at_sale | discount_id | discount_percentage_at_sale |
-| --- | --- | --- | --- | --- |
-| 1 | 2 | 5 | 2 | 10 |
-| 2 | 1 | 0 | 1 | 0 |
-| 3 | 2 | 10 | 1 | 0 |
+| ID | Sale ID | Product ID | Paid qty | Giveaway qty | Unit price | Giveaway reason | Tax ID | Saved tax % | Discount ID | Saved discount % |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1 | 2 | 1 | 1000 | Buy 2, get 1 free | 2 | 5 | 2 | 10 |
+| 2 | 1 | 2 | 3 | 0 | 200 | NULL | 1 | 0 | 1 | 0 |
+| 3 | 2 | 1 | 1 | 0 | 1000 | NULL | 2 | 10 | 1 | 0 |
 
 ### Tax
 
 **PK:** id.
 
-| id | name | percentage |
+| ID | Tax name | Current tax % |
 | --- | --- | --- |
 | 1 | No tax | 0 |
 | 2 | Example tax | 10 |
@@ -261,29 +206,15 @@ The following columns belong to the same sale_item rows. They are shown separate
 
 **PK:** id.
 
-| id | name | percentage |
+| ID | Discount name | Current discount % |
 | --- | --- | --- |
 | 1 | No discount | 0 |
 | 2 | Promotion | 15 |
 
 **Saved percentages**:
 
-- Tax ID 2: R-101 keeps 5%; R-102 keeps 10%. The current rate is 10%.
-- Discount ID 2: R-101 keeps its 10% promotion discount. The current rate is 15%.
-- Saved percentages are historical facts. Current names and rates stay in the lookup tables.
-
-**Paid and giveaway quantities**:
-
-- Paid quantities determine revenue.
-- Giveaway quantities retain their shelf value but generate no revenue or tax charge.
+The tax rates and the discount rates at the time of purchase may differ from the values stored in the tax table and the discount table. Including those columns in the sales items table does not create a **transitive dependency**.
 
 ## Match to the final design
 
-The resulting tables are staff, role, terminal, shift, product, sale, sale_item, tax and discount. There is no separate giveaway or shared-price table.
-
-- Generated `id` fields provide the PKs.
-- Staff codes, receipt numbers and SKUs remain unique.
-- In `sale_item`, `(sale_id, product_id)` remains a candidate key.
-- Adding an `id` does not itself establish a normal form.
-
-The examples omit staff email and active status, role permission flags, terminal names, shift times, current product price and stock fields, and sale date and payment method. Their full definitions are in [Design.md](Design.md).
+The resulting tables are staff, role, terminal, shift, product, sale, sale item, tax and discount. The example omitted some columns, such as email and active status, for simplicity.

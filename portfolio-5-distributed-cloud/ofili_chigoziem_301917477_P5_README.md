@@ -5,6 +5,7 @@ Author: Chigoziem Edmund Ofili (301917477)
 ## Proposed Deployment
 
 GoodNaija's POS and inventory system could be hosted on the cloud to deliver even more values to their customers. The proposed system would link the two checkout terminals to a PostgreSQL database hosted on the cloud. The system would require two servers: 
+
 - The **primary server** would process sales and update records.
 - The **standby server** in a separate availability zone would maintain a replica of the database to support disaster recovery efforts in the event of a server failure.
 
@@ -34,7 +35,7 @@ Reference: [PostgreSQL transaction isolation](https://www.postgresql.org/docs/16
 
 ## Part 3: Limitations CAP Theorem
 
-The CAP theorem states that during a network partition, a distributed system cannot guarantee both consistency and availability. The proposed synchronous replication configuration prioritizes data consistency and durability. If the required standby acknowledgement became unavailable, transactions could be delayed or blocked rather than committed without the intended protection. This means our design is a CP system.
+The CAP theorem states that during a network partition, a distributed system cannot guarantee both consistency and availability. The proposed synchronous replication configuration prioritizes data consistency and durability. If the required standby acknowledgement became unavailable, transactions could be delayed or blocked rather than committed without the intended protection. This means the design is a CP system.
 
 Reference: [CAP Theorem](https://www.devcon5.ch/en/blog/2024/02/02/cap_db/)
 
@@ -46,7 +47,7 @@ Reference: [CAP Theorem](https://www.devcon5.ch/en/blog/2024/02/02/cap_db/)
 
 ## Part 4: Infrastructure Scalability
 
-Scaling is currently unnecessary for our current single-store design. However, should the business expand to many branches and require subtantially more users, vertical and horizontal scaling could be considered.
+Scaling is currently unnecessary for the current single-store design. However, should the business expand to many branches and require subtantially more users, vertical and horizontal scaling could be considered.
 
 **Vertical Scaling**: The proposed cloud system could be scaled vertically by increasing the database server's CPI, memory, or storage capacity. This process would be simpler than distributing data across multiple servers as with horizontal scaling. 
 

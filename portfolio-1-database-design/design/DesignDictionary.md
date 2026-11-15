@@ -4,11 +4,12 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 ## Glossary
 
-- **PK (primary key):** identifies each record.
+- **PK (primary key):** identifies each record; is unique; cannot be `NULL`.
 - **FK (foreign key):** links to a record in another table.
-- **U:** unique; cannot repeat. Mermaid uses **UK** for this marker.
-- **R:** required; cannot be `NULL`.
-- **U1:** fields that are unique together, not individually.
+- **UK (unique key):** unique; cannot repeat. 
+- **REQ (required):** required; cannot be `NULL`.
+- **OPT (optional):** optional; may be `NULL`.
+- **UK1:** sale_item.sale_id and product_id are unique together.
 - **Default:** used when no value is supplied.
 
 Business rules are listed in [CaseStudy.md](CaseStudy.md).
@@ -41,7 +42,7 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 
 ## 2. Staff Entity
 
-**Design Assumption**: Each staff member has one role. User login is outside scope.
+**Design Assumption**: Each staff member has one role. User login is outside the scope.
 
 ### Attributes and keys
 
@@ -109,7 +110,7 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 
 ## 5. Product Entity
 
-**Design Assumption**: Stock is counted in whole units.
+**Design Assumption**: Stock is counted in whole numbers.
 
 ### Attributes and keys
 
@@ -146,7 +147,7 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 
 | Rule           | Constraint or Business Rules |
 | ---            | --- |
-| 8. Default tax | Seed one 0% tax. |
+| 7. Default tax | Seed one 0% tax. |
 
 <br>
 
@@ -166,7 +167,7 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 
 | Rule                | Constraint or Business Rules |
 | ---                 | --- |
-| 9. Default discount | Seed one 0% discount. |
+| 8. Default discount | Seed one 0% discount. |
 
 <br>
 
@@ -219,12 +220,12 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 | 6. Item links                 | Required FKs:<br>sale_id → sale.id<br>product_id → product.id<br>tax_id → tax.id ON DELETE RESTRICT<br>discount_id → discount.id ON DELETE RESTRICT |
 | 6. Item values                | CHECK: unit_price_at_sale > 0.<br>CHECK: paid_qty >= 0 AND giveaway_qty >= 0.<br>CHECK: paid_qty > 0 OR giveaway_qty > 0. |
 | 6. One product per receipt    | UNIQUE (sale_id, product_id).<br>One shelf price for both quantities. |
-| 6, 8, 9. Historical values    | Save shelf price and applied tax/discount rates on sale_item.<br>Lookup edits leave saved values unchanged. |
-| 7. Giveaway reason            | CHECK: reason NOT NULL and non-blank if giveaway_qty > 0;<br>reason IS NULL if giveaway_qty = 0. |
-| 8. Default tax reference      | Default tax_id to the 0% tax record ID. |
-| 9. Default discount reference | Default discount_id to the 0% discount record ID. |
-| 5, 7, 9. Receipt calculations | Paid value = paid_qty × unit_price_at_sale.<br>Apply discount, then tax.<br>Revenue excludes tax.<br>Giveaway revenue and tax = 0. |
-| 10. Stock reduction           | Stock reduction = paid_qty + giveaway_qty. |
+| 3, 7, 8. Historical values    | Save shelf price and applied tax/discount rates on sale_item.<br>Lookup edits leave saved values unchanged. |
+| 6. Giveaway reason            | CHECK: reason NOT NULL and non-blank if giveaway_qty > 0;<br>reason IS NULL if giveaway_qty = 0. |
+| 7. Default tax reference      | Default tax_id to the 0% tax record ID. |
+| 8. Default discount reference | Default discount_id to the 0% discount record ID. |
+| 5, 6, 7, 8. Receipt calculations | Paid value = paid_qty × unit_price_at_sale.<br>Apply discount, then tax.<br>Revenue excludes tax.<br>Giveaway revenue and tax = 0. |
+| 6. Stock reduction           | Stock reduction = paid_qty + giveaway_qty. |
 
 <br>
 
@@ -233,4 +234,4 @@ Business rules are listed in [CaseStudy.md](CaseStudy.md).
 | Rule                       | Constraint or Business Rules |
 | ---                        | --- |
 | 5. Completed sales         | Transaction validates completion and at least one sale_item.<br>FK cannot require child rows. |
-| 10. Stock and transactions | Save sale, items and stock changes in one transaction.<br>ROLLBACK if stock is insufficient or any step fails. |
+| 9. Stock and transactions | Save sale, items and stock changes in one transaction.<br>ROLLBACK if stock is insufficient or any step fails. |

@@ -4,14 +4,16 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 ## Glossary
 
-- **PK (primary key):** identifies each record and is unique.
+- **PK (primary key):** identifies each record; is unique; cannot be `NULL`.
 - **FK (foreign key):** links to a record in another table.
-- **UK (unique key):** values cannot repeat.
-- **REQ (required):** required; cannot be NULL.
-- **OPT (optional):** optional; may be NULL.
-- **UK1:** sale_item.sale_id and product_id are unique together, not individually.
+- **UK (unique key):** unique; cannot repeat. 
+- **REQ (required):** required; cannot be `NULL`.
+- **OPT (optional):** optional; may be `NULL`.
+- **UK1:** sale_item.sale_id and product_id are unique together.
+- **Default:** used when no value is supplied.
 
-PK, FK and UK markers can be combined.
+Business rules and constraints are in [Design.md](Design.md).
+Table schema is in [DesignDictionary.md](DesignDictionary.md).
 
 ## Keys and relationships
 
@@ -149,6 +151,4 @@ erDiagram
     }
 ```
 
-See [Design.md](Design.md) for the attribute requirements and constraints.
-
-**UK1:** In `sale_item`, `(sale_id, product_id)` is unique; neither column is unique on its own.
+**UK1:** Note that in `sale_item`, `(sale_id, product_id)` is unique even thought neither column is unique on its own.

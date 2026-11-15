@@ -4,7 +4,7 @@ Author: Chigoziem Edmund Ofili (301917477)
 
 ## Steps to reproduce
 
-Worked from the repository root in GitHub Codespaces. Database commands were run inside `psql`.
+This test was conducted on GitHub codespace using `psql`. The test involved 5 invalid sql queries (data inserts) which violated the database contraints and 2 valid sql queries (test cases) which should work based on the design.
 
 1. Prepared PostgreSQL using the [PostgreSQL environment setup](../design/Setup.md).
 
@@ -43,9 +43,9 @@ Worked from the repository root in GitHub Codespaces. Database commands were run
 
 6. Saved the [screenshots](outputs) and checked the results.
 
-**Results:**
+## **Results:**
 
-1. All five invalid inserts were rejected by the intended constraints; row counts stayed unchanged.
-2. Saved tax and discount rates remained unchanged when current rates changed.
-3. The committed sale recorded two paid Beans and one giveaway, reduced stock from 50 to 47, and charged 1000.00.
+1. The five invalid inserts were correctly rejected by the db constraints as evidence by the row counts remaining unchanged.
+2. For the first positive tests, the saved tax/discount rates on the sales items remained unchanged after the rates on the tax/discount tables where changed.
+3. For the second positive test, the committed sale recorded 2 paid Beans and 1 giveaway which reduced the beans' stock qty from 50 to 47, and charged 1000.00 (each bean cost 500).
 

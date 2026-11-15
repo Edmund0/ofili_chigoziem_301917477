@@ -2,17 +2,18 @@
 
 Author: Chigoziem Edmund Ofili (301917477)
 
-PostgreSQL installation, startup and connection in GitHub Codespaces.
+The PostgreSQL installation, startup, and connection used in this project.
 
 ## 1. Open the terminal
 
-Open the repository in Codespaces, then choose Terminal → New Terminal. Work from the repository root, where the five portfolio folders are visible.
-
-The commands below go in the shell terminal. If the prompt ends in `=#`, enter `\q` to leave psql first.
+- Open the repo in Codespaces. 
+- Open a new terminal. 
+- Work from the repository root.
+- If the terminal ends in `postgres=#`, enter `\q` to leave psql first.
 
 ## 2. Install PostgreSQL
 
-Check whether the client is installed:
+Check if PostgreSQL is installed:
 
 ```bash
 psql --version
@@ -25,23 +26,26 @@ sudo apt-get update
 sudo apt-get install -y postgresql
 ```
 
-Installation is needed once per Codespace environment.
-
 ## 3. Start PostgreSQL
+
+To start PostgreSQL, run:
 
 ```bash
 sudo service postgresql start
 ```
 
-Run this when returning to a stopped Codespace. Existing databases do not need to be recreated.
+When running to a stopped codespace, re-run this command.
 
 ## 4. Open psql
+
+To open the PostgreSQL client, run:
 
 ```bash
 sudo runuser -u postgres -- psql
 ```
 
-A prompt such as `postgres=#` indicates a database connection. The remaining commands go inside psql.
+Ensure the prompt ends in `postgres=#` which indicates a database connection. 
+
 
 ```text
 \pset pager off
@@ -51,11 +55,16 @@ This keeps query results in the terminal instead of opening a separate scrolling
 
 ## 5. Check the connection
 
+To check the connection, run:
+
 ```sql
 SELECT current_database(), current_user, version();
 ```
 
-Record the actual server version and environment. `psql --version` reports the client version; `version()` reports the connected server version.
+Check the server version and environment. 
+
+- `psql --version` reports the client version.
+- `version()` reports the connected server version.
 
 ## 6. Exit psql
 
@@ -67,6 +76,6 @@ To exit psql:
 
 ## References
 
-Reference: [PostgreSQL installation on Ubuntu](https://www.postgresql.org/download/linux/ubuntu/).
+1.  [PostgreSQL installation on Ubuntu](https://www.postgresql.org/download/linux/ubuntu/).
 
-Reference: [PostgreSQL psql commands](https://www.postgresql.org/docs/16/app-psql.html).
+2. [PostgreSQL psql commands](https://www.postgresql.org/docs/16/app-psql.html).
