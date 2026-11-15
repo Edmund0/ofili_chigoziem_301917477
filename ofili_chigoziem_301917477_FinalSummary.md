@@ -121,5 +121,6 @@ During the concurrency test, the first attempt to check the other session's acti
 
 [5] PostgreSQL. [Standby servers and replication](https://www.postgresql.org/docs/16/warm-standby.html).
 
+## AI-use declaration
 
-
+I used Claude and ChatGPT/Codex as a learning and development aid. Claude helped to prepare study guides and summarize online reference materials. Codex helped explain advanced database concepts, find and research PostgreSQL syntax documentations and environmental setup procedures, troubleshoot database errors, and format documentation and Mermaid diagrams. I devised test cases, ran database commands and tests, review and revised output, and interpreted the results.
