@@ -25,4 +25,4 @@ The supermarket's POS and inventory system could be implemented using a document
 
 A document model suits inventory events because each event can keep all related information together. A sales event retains its product and staff information together, while deliveries and giveaways store different details. Nested fields can be queried without joining separate collections.
 
-**Limitations**: This collection does not enforce the PostgreSQL foreign keys, permissions or non-negative stock rule. It demonstrates event storage rather than replacing the complete POS database.
+**Limitations**: This collection does not enforce any of the PostgreSQL foreign keys, permissions or non-negative stock rule.
